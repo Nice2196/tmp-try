@@ -90,6 +90,16 @@ Phase 6: agent("GitFlow分支", { skill: "git-flow-branch-creator" })
          → agent("生成CHANGELOG", { skill: "changelog-generator" })
 ```
 
+#### ⚠️ Phase 6 后必须立即提交（防漏）
+
+Phase 6 Workflow 只**产出** commit message/CHANGELOG 文本，不执行 git 操作。Workflow 完成后，主会话**必须立即**执行：
+
+```bash
+git add -A && git commit -m "<Phase6产出的message>" && git push origin <branch>
+```
+
+> **为什么**：Stop Hook (`auto-savepoint.py`) 在会话结束时才触发 git commit/push，但会话可能很长，中间如果出问题代码就丢了。Stop Hook 是**兜底**，Phase 6 后的主动提交是**主路径**。
+
 ### Skills 来源与质量
 
 | 来源仓库 | ⭐ Stars | 提供的 Skills |
