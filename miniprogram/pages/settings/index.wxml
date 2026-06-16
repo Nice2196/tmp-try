@@ -1,0 +1,99 @@
+<!-- 设置页 -->
+<view class="page-container">
+
+  <!-- ==================== 用户信息 ==================== -->
+  <view class="card">
+    <view class="card-title">用户信息</view>
+    <view class="setting-item" bindtap="onCopyOpenid">
+      <view class="si-left">
+        <text class="si-label">OpenID</text>
+        <text class="si-value">{{openid || '获取中...'}}</text>
+      </view>
+      <text class="si-action">复制</text>
+    </view>
+  </view>
+
+  <!-- ==================== 系统设置 ==================== -->
+  <view class="card mt-md">
+    <view class="card-title">系统设置</view>
+
+    <!-- 默认预警阈值 -->
+    <view class="setting-item">
+      <view class="si-left">
+        <text class="si-label">低课时预警阈值</text>
+        <text class="si-value">剩余课时低于该值时提醒</text>
+      </view>
+      <input
+        class="si-input"
+        type="number"
+        value="{{defaultLowHoursThreshold}}"
+        bindinput="onThresholdInput"
+      />
+      <text class="si-unit">课时</text>
+    </view>
+
+    <!-- 初始化数据库 -->
+    <view class="setting-item" bindtap="onInitDB">
+      <view class="si-left">
+        <text class="si-label">初始化数据库索引</text>
+        <text class="si-value">首次使用需执行一次</text>
+      </view>
+      <text class="si-action">执行</text>
+    </view>
+
+    <!-- 操作日志 -->
+    <view class="setting-item" bindtap="onViewAuditLog">
+      <view class="si-left">
+        <text class="si-label">操作日志</text>
+        <text class="si-value">查看所有操作记录</text>
+      </view>
+      <text class="si-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- ==================== 缓存管理 ==================== -->
+  <view class="card mt-md">
+    <view class="card-title">缓存管理</view>
+    <view class="setting-item" bindtap="onClearCache">
+      <view class="si-left">
+        <text class="si-label">清除缓存</text>
+        <text class="si-value">清除本地存储数据</text>
+      </view>
+      <text class="si-action">清除</text>
+    </view>
+  </view>
+
+  <!-- ==================== 关于 ==================== -->
+  <view class="card mt-md">
+    <view class="card-title">关于</view>
+    <view class="setting-item">
+      <text class="si-label">版本</text>
+      <text class="si-value">v{{version}}</text>
+    </view>
+    <view class="setting-item">
+      <text class="si-label">技术栈</text>
+      <text class="si-value">微信原生 + 云开发</text>
+    </view>
+    <view class="setting-item">
+      <text class="si-label">数据库</text>
+      <text class="si-value">云数据库（文档型）</text>
+    </view>
+  </view>
+
+  <!-- ==================== 说明 ==================== -->
+  <view class="card mt-md">
+    <view class="card-title">使用说明</view>
+    <view class="help-text">
+      <text>1. 首次使用请在「系统设置」中初始化数据库索引</text>
+      <text>2. 创建课程后，设置固定排课即可启用自动消课</text>
+      <text>3. 自动消课每小时检查一次，在日历页查看状态</text>
+      <text>4. 手动消课适合临时上课场景</text>
+      <text>5. 所有操作均有审计日志记录</text>
+      <text>6. 数据通过 OPENID 隔离，不同用户互不可见</text>
+    </view>
+  </view>
+
+  <!-- 底部安全距离 -->
+  <view class="safe-bottom"></view>
+
+</view>

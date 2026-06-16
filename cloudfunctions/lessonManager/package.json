@@ -1,0 +1,9 @@
+{
+  "name": "lesson-manager",
+  "version": "1.0.0",
+  "description": "消课管理云函数 - 手工消课(事务) + 取消消课 + 记录查询",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

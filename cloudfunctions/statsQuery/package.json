@@ -1,0 +1,9 @@
+{
+  "name": "stats-query",
+  "version": "1.0.0",
+  "description": "统计查询云函数 - 分类统计 + 30天趋势 + 过期/低课时预警",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

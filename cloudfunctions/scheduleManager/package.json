@@ -1,0 +1,9 @@
+{
+  "name": "schedule-manager",
+  "version": "1.0.0",
+  "description": "排课管理云函数 - 固定上课时间CRUD + 重复校验 + 审计日志",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

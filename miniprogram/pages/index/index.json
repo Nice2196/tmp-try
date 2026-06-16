@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "课时管理",
+  "usingComponents": {
+    "course-card": "/components/course-card/index",
+    "empty-state": "/components/empty-state/index"
+  },
+  "enablePullDownRefresh": true
+}

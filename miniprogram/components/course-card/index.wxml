@@ -1,0 +1,50 @@
+<!-- 课程卡片组件 -->
+<view class="card" wx:if="{{course}}">
+
+  <!-- 卡片头部 -->
+  <view class="card-header">
+    <view class="card-name">
+      <text>{{course.name || '未命名课程'}}</text>
+    </view>
+    <view class="tag {{course.status || 'active'}}">
+      {{statusLabel}}
+    </view>
+  </view>
+
+  <!-- 进度条 -->
+  <view class="progress-section">
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{progressPercent}}%"></view>
+    </view>
+    <view class="progress-info">
+      <text class="pi-left">已消 {{course.consumedHours || 0}} / {{course.totalHours || 0}} 课时</text>
+      <text class="pi-right">{{progressPercent}}%</text>
+    </view>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="card-footer">
+    <view class="cf-item" wx:if="{{course.subject}}">
+      <text class="cf-label">科目</text>
+      <text class="cf-value">{{course.subject}}</text>
+    </view>
+    <view class="cf-item" wx:if="{{course.courseType}}">
+      <text class="cf-label">类型</text>
+      <text class="cf-value">{{course.courseType}}</text>
+    </view>
+    <view class="cf-item">
+      <text class="cf-label">剩余</text>
+      <text class="cf-value cf-highlight {{course.remainingHours <= (course.lowHoursThreshold || 3) ? 'cf-warn' : ''}}">
+        {{course.remainingHours || 0}} 课时
+      </text>
+    </view>
+  </view>
+
+  <!-- 过期提醒 -->
+  <view class="card-warning" wx:if="{{course.status === 'active' && course.expiryDate}}">
+    <text class="cw-text" wx:if="{{isExpiring}}">
+      ⚡ 将于 {{course.expiryDate}} 过期
+    </text>
+  </view>
+
+</view>

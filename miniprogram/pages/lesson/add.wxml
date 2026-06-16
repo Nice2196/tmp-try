@@ -1,0 +1,92 @@
+<!-- 手动消课页 -->
+<view class="page-container" wx:if="{{!loading}}">
+
+  <view class="form-card" wx:if="{{courses.length > 0}}">
+
+    <!-- 选择课程 -->
+    <view class="form-group">
+      <view class="form-label">选择课程</view>
+      <picker
+        range="{{courses}}"
+        range-key="name"
+        value="{{courseIndex}}"
+        bindchange="onCourseChange"
+      >
+        <view class="form-picker">
+          {{selectedCourse ? selectedCourse.name : '请选择课程'}}
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 课程信息展示 -->
+    <view class="course-info" wx:if="{{selectedCourse}}">
+      <view class="ci-row">
+        <text class="ci-label">课程类型</text>
+        <text class="ci-value">{{selectedCourse.courseType}}</text>
+      </view>
+      <view class="ci-row">
+        <text class="ci-label">剩余课时</text>
+        <text class="ci-value ci-highlight">{{selectedCourse.remainingHours}} / {{selectedCourse.totalHours}}</text>
+      </view>
+    </view>
+
+    <!-- 上课日期 -->
+    <view class="form-group">
+      <view class="form-label">上课日期</view>
+      <picker mode="date" value="{{lessonDate}}" bindchange="onDateChange">
+        <view class="form-picker">
+          {{lessonDate || '选择日期'}}
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 消课时数 -->
+    <view class="form-group">
+      <view class="form-label">本次扣课时</view>
+      <input
+        class="form-input"
+        type="digit"
+        value="{{deductionHours}}"
+        bindinput="onHoursInput"
+      />
+    </view>
+
+    <!-- 备注 -->
+    <view class="form-group">
+      <view class="form-label">备注</view>
+      <textarea
+        class="form-textarea"
+        placeholder="选填"
+        value="{{notes}}"
+        bindinput="onNotesInput"
+        auto-height
+      />
+    </view>
+
+    <!-- 提交 -->
+    <button
+      class="btn btn-primary"
+      bindtap="onSubmit"
+      disabled="{{!selectedCourse || submitting}}"
+      loading="{{submitting}}"
+    >
+      确认消课
+    </button>
+  </view>
+
+  <!-- 无可消课课程 -->
+  <empty-state
+    wx:else
+    icon="📚"
+    text="暂无可消课的课程"
+    subText="请先创建课程"
+  />
+
+</view>
+
+<!-- 加载中 -->
+<view class="loading-container" wx:if="{{loading}}">
+  <text class="loading-text">加载中...</text>
+</view>

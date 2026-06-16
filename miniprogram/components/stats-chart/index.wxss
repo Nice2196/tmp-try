@@ -1,0 +1,58 @@
+/**
+ * 统计图表组件样式
+ */
+.chart-container {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+ec-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* 回退视图 */
+.fallback-view {
+  padding: var(--spacing-md);
+}
+
+.fallback-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.fallback-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.fallback-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: var(--spacing-xs) 0;
+}
+
+.fb-name {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.fb-value {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.empty-chart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}

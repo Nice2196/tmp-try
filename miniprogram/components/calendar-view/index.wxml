@@ -1,0 +1,37 @@
+<!-- 日历网格组件 -->
+<view class="calendar-grid">
+
+  <!-- 网格线 7x6 -->
+  <view
+    class="cell-wrapper"
+    wx:for="{{cells}}"
+    wx:key="date"
+    data-date="{{item.date}}"
+    bindtap="onDayTap"
+  >
+    <!-- 非当月格：半透明 -->
+    <view class="cell {{item.isCurrentMonth ? '' : 'cell-other-month'}}">
+
+      <!-- 今日标记 -->
+      <view class="cell-inner {{item.isToday ? 'today' : ''}}">
+
+        <!-- 日期数字 -->
+        <text class="cell-day {{item.isToday ? 'today-text' : ''}}">{{item.day}}</text>
+
+        <!-- 课程标记点 -->
+        <view class="cell-dots" wx:if="{{item.info && item.info.lessonCount > 0}}">
+          <!-- 状态色点 -->
+          <view
+            class="dot dot-{{item.info.status || 'pending'}}"
+            wx:if="{{item.info.status}}"
+          ></view>
+
+          <!-- 课时数 -->
+          <text class="cell-count">{{item.info.lessonCount}}课</text>
+        </view>
+
+      </view>
+    </view>
+  </view>
+
+</view>

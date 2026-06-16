@@ -1,0 +1,236 @@
+/**
+ * 数据统计页样式
+ */
+.page-container {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+/* Tab */
+.tab-bar {
+  display: flex;
+  flex-direction: row;
+  background: var(--color-card);
+  border-bottom: 1rpx solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: var(--spacing-md);
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  border-bottom: 4rpx solid transparent;
+}
+
+.tab-item.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  font-weight: 600;
+}
+
+.tab-badge {
+  display: inline-block;
+  background: var(--color-expired);
+  color: #fff;
+  font-size: 18rpx;
+  padding: 0 8rpx;
+  border-radius: var(--radius-round);
+  margin-left: 4rpx;
+  vertical-align: top;
+}
+
+.tab-content {
+  padding: var(--spacing-md);
+}
+
+/* 指标卡片 */
+.metric-cards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.metric-card {
+  flex: 1 1 45%;
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.metric-value {
+  font-size: var(--font-size-xxl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.metric-value.primary { color: var(--color-primary); }
+.metric-value.warning { color: var(--color-warning); }
+.metric-value.success { color: var(--color-success); }
+
+.metric-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+}
+
+/* 大数字 */
+.big-number {
+  font-size: var(--font-size-xxl);
+  font-weight: 700;
+  color: var(--color-primary);
+  text-align: center;
+  padding: var(--spacing-md) 0;
+}
+
+/* 卡片 */
+.card {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.mt-md {
+  margin-top: var(--spacing-md);
+}
+
+.card-title {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+/* 课程分布 */
+.breakdown-item {
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1rpx solid var(--color-border);
+}
+
+.breakdown-item:last-child {
+  border-bottom: none;
+}
+
+.bi-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-xs);
+}
+
+.bi-name {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bi-percent {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  font-weight: 600;
+  margin-left: var(--spacing-sm);
+}
+
+.progress-bar {
+  height: 10rpx;
+  background: var(--color-border);
+  border-radius: 5rpx;
+  overflow: hidden;
+  margin-bottom: var(--spacing-xs);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--color-pending), var(--color-success));
+  border-radius: 5rpx;
+}
+
+.bi-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* 预警 */
+.warn-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1rpx solid var(--color-border);
+}
+
+.warn-item:last-child {
+  border-bottom: none;
+}
+
+.warn-item:active {
+  background: var(--color-bg);
+  margin: 0 calc(-1 * var(--spacing-lg));
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
+}
+
+.warn-expiry {
+  border-left: 4rpx solid var(--color-warning);
+  padding-left: var(--spacing-sm);
+}
+
+.warn-low {
+  border-left: 4rpx solid var(--color-expired);
+  padding-left: var(--spacing-sm);
+}
+
+.wi-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.wi-name {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.wi-sub {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: 4rpx;
+}
+
+.wi-arrow {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-secondary);
+}
+
+/* 加载 */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+}
+
+.loading-text {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.safe-bottom {
+  height: 40rpx;
+}

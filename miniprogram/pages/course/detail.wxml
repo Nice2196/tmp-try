@@ -1,0 +1,131 @@
+<!-- 课程详情页 -->
+<view class="page-container" wx:if="{{!loading && course}}">
+
+  <!-- ==================== 课程基本信息卡片 ==================== -->
+  <view class="card info-card">
+    <view class="card-header">
+      <view class="course-name">{{course.name}}</view>
+      <view class="status-tag {{course.status}}">{{courseStatusLabel}}</view>
+    </view>
+
+    <!-- 进度条 -->
+    <view class="progress-section">
+      <view class="progress-bar">
+        <view class="progress-fill" style="width: {{course.consumedHours / course.totalHours * 100}}%"></view>
+      </view>
+      <view class="progress-text">
+        <text>已消耗 {{course.consumedHours || 0}} 课时</text>
+        <text>剩余 {{course.remainingHours}} / 总计 {{course.totalHours}} 课时</text>
+      </view>
+    </view>
+
+    <!-- 详情信息 -->
+    <view class="info-rows">
+      <view class="info-row">
+        <text class="info-label">科目</text>
+        <text class="info-value">{{course.subject}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">类型</text>
+        <text class="info-value">{{course.courseType}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">学生</text>
+        <text class="info-value">{{course.student || '-'}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">老师</text>
+        <text class="info-value">{{course.teacher || '-'}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">每次扣课时</text>
+        <text class="info-value">{{course.deductionUnit || 1}} 课时</text>
+      </view>
+      <view class="info-row" wx:if="{{course.startDate}}">
+        <text class="info-label">开始日期</text>
+        <text class="info-value">{{course.startDate}}</text>
+      </view>
+      <view class="info-row" wx:if="{{course.expiryDate}}">
+        <text class="info-label">过期日期</text>
+        <text class="info-value">{{course.expiryDate}}</text>
+      </view>
+      <view class="info-row" wx:if="{{course.notes}}">
+        <text class="info-label">备注</text>
+        <text class="info-value">{{course.notes}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ==================== 固定排课列表 ==================== -->
+  <view class="card schedule-card">
+    <view class="section-title">
+      <text>固定排课</text>
+      <text class="add-schedule-btn" bindtap="onAddSchedule">+ 添加</text>
+    </view>
+
+    <view wx:if="{{schedules.length > 0}}">
+      <view
+        class="schedule-item"
+        wx:for="{{schedules}}"
+        wx:key="_id"
+        data-schedule-id="{{item._id}}"
+        bindtap="onEditSchedule"
+      >
+        <view class="schedule-weekday">
+          <text class="weekday-label">{{item.weekdayLabel}}</text>
+        </view>
+        <view class="schedule-time">
+          <text>{{item.time}}</text>
+        </view>
+        <view class="schedule-status {{item.status}}">
+          {{item.status === 'active' ? '启用' : '暂停'}}
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-schedule" wx:else>
+      <text>暂未设置固定排课</text>
+      <text class="sub-text">设置后可按周期自动消课</text>
+    </view>
+  </view>
+
+  <!-- ==================== 操作按钮组 ==================== -->
+  <view class="action-buttons">
+    <button class="btn btn-primary" bindtap="onQuickDeduct">
+      📝 手动消课
+    </button>
+    <button class="btn btn-outline" bindtap="onViewLessons">
+      📋 消课记录
+    </button>
+    <button class="btn btn-outline" bindtap="onEdit">
+      ✏️ 编辑课程
+    </button>
+    <button
+      class="btn btn-outline {{course.status === 'active' ? 'btn-warning' : 'btn-success'}}"
+      bindtap="onToggleStatus"
+    >
+      {{course.status === 'active' ? '⏸ 暂停课程' : '▶️ 恢复课程'}}
+    </button>
+    <button class="btn btn-outline btn-danger" bindtap="onDelete">
+      🗑 删除课程
+    </button>
+  </view>
+
+</view>
+
+<!-- 空状态 -->
+<view wx:if="{{!loading && !course}}">
+  <empty-state
+    icon="📚"
+    text="课程未找到"
+    subText="该课程可能已被删除"
+  />
+</view>
+
+<!-- 加载中 -->
+<view class="loading-container" wx:if="{{loading}}">
+  <text class="loading-text">加载中...</text>
+</view>
+
+<!-- 底部安全距离 -->
+<view class="safe-bottom"></view>

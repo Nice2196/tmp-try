@@ -1,0 +1,181 @@
+/**
+ * 日历看板页样式
+ */
+.page-container {
+  min-height: 100vh;
+  background: var(--color-card);
+}
+
+/* 月份导航 */
+.month-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--color-card);
+}
+
+.nav-arrow {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  color: var(--color-primary);
+  font-weight: 300;
+  border-radius: var(--radius-round);
+}
+
+.nav-arrow:active {
+  background: var(--color-primary-light);
+}
+
+.nav-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* 星期标题 */
+.weekday-row {
+  display: flex;
+  flex-direction: row;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-bg);
+  border-bottom: 1rpx solid var(--color-border);
+}
+
+.weekday-col {
+  flex: 1;
+  text-align: center;
+}
+
+.weekday-text {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.weekday-col:first-child .weekday-text,
+.weekday-col:last-child .weekday-text {
+  color: var(--color-expired);
+}
+
+/* 加载 */
+.loading-container {
+  padding: var(--spacing-xl);
+  text-align: center;
+}
+
+.loading-text {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* ==================== 弹窗 ==================== */
+.popup-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.popup-content {
+  background: var(--color-card);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  width: 100%;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.popup-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1rpx solid var(--color-border);
+}
+
+.popup-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+.popup-close {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+}
+
+.popup-body {
+  padding: var(--spacing-md);
+}
+
+.lesson-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--spacing-md) 0;
+  border-bottom: 1rpx solid var(--color-border);
+}
+
+.lesson-item:active {
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+}
+
+.lesson-status-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: var(--radius-round);
+  margin-right: var(--spacing-md);
+  flex-shrink: 0;
+}
+
+.lesson-status-dot.completed {
+  background: var(--color-success);
+}
+
+.lesson-status-dot.pending {
+  background: var(--color-pending);
+}
+
+.lesson-status-dot.expired {
+  background: var(--color-expired);
+}
+
+.lesson-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.lesson-name {
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+}
+
+.lesson-time {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: 4rpx;
+}
+
+.empty-lesson {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}

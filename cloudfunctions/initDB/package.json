@@ -1,0 +1,9 @@
+{
+  "name": "init-db",
+  "version": "1.0.0",
+  "description": "数据库初始化云函数 - 创建索引和TTL配置",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

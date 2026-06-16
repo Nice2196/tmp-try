@@ -1,0 +1,111 @@
+/**
+ * 设置页样式
+ */
+.page-container {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  padding: var(--spacing-md);
+}
+
+.card {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.mt-md {
+  margin-top: var(--spacing-md);
+}
+
+.card-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.setting-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1rpx solid var(--color-border);
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+.setting-item:active {
+  background: var(--color-bg);
+  margin: 0 calc(-1 * var(--spacing-lg));
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
+}
+
+.si-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.si-label {
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+}
+
+.si-value {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: 4rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.si-action {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.si-arrow {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.si-input {
+  width: 80rpx;
+  height: 60rpx;
+  text-align: center;
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  border: 1rpx solid var(--color-border);
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+}
+
+.si-unit {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-left: var(--spacing-xs);
+}
+
+/* 帮助文本 */
+.help-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.help-text text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.safe-bottom {
+  height: 80rpx;
+}

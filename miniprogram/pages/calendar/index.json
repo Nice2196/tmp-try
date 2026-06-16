@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "日历看板",
+  "usingComponents": {
+    "calendar-view": "/components/calendar-view/index",
+    "empty-state": "/components/empty-state/index"
+  }
+}

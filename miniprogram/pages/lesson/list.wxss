@@ -1,0 +1,157 @@
+/**
+ * 消课记录列表页样式
+ */
+.page-container {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  padding: var(--spacing-md);
+}
+
+.course-header {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  box-shadow: var(--shadow-card);
+}
+
+.course-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  display: block;
+}
+
+.lesson-count {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+  display: block;
+}
+
+/* 记录卡片 */
+.lesson-item {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
+  box-shadow: var(--shadow-card);
+}
+
+.lesson-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.lesson-date {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+.lesson-tag {
+  font-size: var(--font-size-xs);
+  padding: 2rpx 12rpx;
+  border-radius: var(--radius-round);
+  margin-left: var(--spacing-xs);
+}
+
+.lesson-tag.auto {
+  color: var(--color-primary);
+  background: rgba(24, 144, 255, 0.1);
+}
+
+.lesson-tag.manual {
+  color: #722ED1;
+  background: rgba(114, 46, 209, 0.1);
+}
+
+.lesson-tag.completed {
+  color: var(--color-success);
+  background: rgba(82, 196, 26, 0.1);
+}
+
+.lesson-tag.cancelled {
+  color: var(--color-expired);
+  background: rgba(255, 77, 79, 0.1);
+}
+
+.lesson-body {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-sm);
+}
+
+.lb-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.lb-hours {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-expired);
+}
+
+.lb-time {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: 4rpx;
+}
+
+.lb-right {
+  flex: 1;
+  margin-left: var(--spacing-md);
+}
+
+.lb-notes {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.lesson-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--spacing-sm);
+  border-top: 1rpx solid var(--color-border);
+}
+
+.lf-balance {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.lf-cancel-btn {
+  font-size: var(--font-size-xs);
+  color: var(--color-expired);
+  padding: 4rpx 20rpx;
+  border: 1rpx solid var(--color-expired);
+  border-radius: var(--radius-round);
+}
+
+.lf-cancel-btn:active {
+  background: rgba(255, 77, 79, 0.1);
+}
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+}
+
+.loading-text {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.safe-bottom {
+  height: 40rpx;
+}

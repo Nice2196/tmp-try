@@ -1,0 +1,204 @@
+/**
+ * 课程编辑页样式
+ */
+.page-container {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  padding-bottom: 60rpx;
+}
+
+/* Tab 切换 */
+.tab-bar {
+  display: flex;
+  flex-direction: row;
+  background: var(--color-card);
+  border-bottom: 1rpx solid var(--color-border);
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: var(--spacing-md);
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  border-bottom: 4rpx solid transparent;
+  transition: all 0.2s;
+}
+
+.tab-item.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  font-weight: 600;
+}
+
+.tab-content {
+  padding: var(--spacing-md);
+}
+
+/* 表单卡片 */
+.form-card {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  box-shadow: var(--shadow-card);
+}
+
+.card-title {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1rpx solid var(--color-border);
+}
+
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.required {
+  color: var(--color-expired);
+  margin-left: 4rpx;
+}
+
+.form-input {
+  width: 100%;
+  height: 80rpx;
+  padding: 0 var(--spacing-sm);
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  border: 1rpx solid var(--color-border);
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 120rpx;
+  padding: var(--spacing-sm);
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  border: 1rpx solid var(--color-border);
+}
+
+.form-picker {
+  width: 100%;
+  height: 80rpx;
+  padding: 0 var(--spacing-sm);
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  border: 1rpx solid var(--color-border);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.picker-arrow {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-secondary);
+}
+
+/* 提交按钮 */
+.submit-section {
+  padding: var(--spacing-md) 0;
+}
+
+.btn {
+  width: 100%;
+  height: 88rpx;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.btn-outline {
+  background: var(--color-card);
+  color: var(--color-primary);
+  border: 1rpx solid var(--color-primary);
+}
+
+/* 排课列表 */
+.schedule-list {
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.schedule-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1rpx solid var(--color-border);
+}
+
+.schedule-item:last-child {
+  border-bottom: none;
+}
+
+.si-weekday {
+  width: 120rpx;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.si-time {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.si-status {
+  font-size: var(--font-size-xs);
+  padding: 2rpx 12rpx;
+  border-radius: var(--radius-round);
+  margin-right: var(--spacing-sm);
+}
+
+.si-status.active {
+  color: var(--color-success);
+  background: rgba(82, 196, 26, 0.1);
+}
+
+.si-status.paused {
+  color: var(--color-warning);
+  background: rgba(250, 173, 20, 0.1);
+}
+
+.si-delete {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-expired);
+  font-size: var(--font-size-md);
+  border-radius: var(--radius-round);
+}
+
+.si-delete:active {
+  background: rgba(255, 77, 79, 0.1);
+}

@@ -1,0 +1,9 @@
+{
+  "name": "calendar-query",
+  "version": "1.0.0",
+  "description": "日历查询云函数 - 按月获取日历视图数据(排课+消课记录合并)",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

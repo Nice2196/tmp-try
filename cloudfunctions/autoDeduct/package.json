@@ -1,0 +1,9 @@
+{
+  "name": "auto-deduct",
+  "version": "1.0.0",
+  "description": "自动消课云函数 - 定时触发器扫描当日排课并执行自动扣课时(含幂等锁+事务)",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

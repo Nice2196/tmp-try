@@ -1,0 +1,46 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/calendar/index",
+    "pages/stats/index",
+    "pages/settings/index",
+    "pages/course/detail",
+    "pages/course/edit",
+    "pages/lesson/add",
+    "pages/lesson/list",
+    "pages/audit-log/index"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "课时管理",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f5f5",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#1890FF",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "📚 首页"
+      },
+      {
+        "pagePath": "pages/calendar/index",
+        "text": "📅 日历"
+      },
+      {
+        "pagePath": "pages/stats/index",
+        "text": "📊 统计"
+      },
+      {
+        "pagePath": "pages/settings/index",
+        "text": "⚙️ 设置"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

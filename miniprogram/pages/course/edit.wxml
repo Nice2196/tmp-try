@@ -1,0 +1,259 @@
+<!-- 课程编辑页（新增/编辑） -->
+<view class="page-container">
+
+  <!-- ==================== Tab 切换 ==================== -->
+  <view class="tab-bar" wx:if="{{isEdit}}">
+    <view
+      class="tab-item {{activeTab === 'course' ? 'active' : ''}}"
+      data-tab="course"
+      bindtap="onSwitchTab"
+    >课程信息</view>
+    <view
+      class="tab-item {{activeTab === 'schedule' ? 'active' : ''}}"
+      data-tab="schedule"
+      bindtap="onSwitchTab"
+    >固定排课</view>
+  </view>
+
+  <!-- ==================== Tab: 课程信息 ==================== -->
+  <view class="tab-content" wx:if="{{activeTab === 'course'}}">
+
+    <view class="form-card">
+      <!-- 课程名称 -->
+      <view class="form-group">
+        <view class="form-label">
+          <text>课程名称</text>
+          <text class="required">*</text>
+        </view>
+        <input
+          class="form-input"
+          placeholder="例如：初三数学1对1"
+          value="{{form.name}}"
+          bindinput="onNameInput"
+        />
+      </view>
+
+      <!-- 课程类型 -->
+      <view class="form-group">
+        <view class="form-label">课程类型</view>
+        <picker
+          range="{{courseTypeOptions}}"
+          range-key="label"
+          value="{{courseTypeIndex}}"
+          bindchange="onCourseTypeChange"
+        >
+          <view class="form-picker">
+            {{courseTypeOptions[courseTypeIndex].label}}
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+
+      <!-- 科目 -->
+      <view class="form-group">
+        <view class="form-label">科目</view>
+        <picker
+          range="{{subjectOptions}}"
+          range-key="label"
+          value="{{subjectIndex}}"
+          bindchange="onSubjectChange"
+        >
+          <view class="form-picker">
+            {{subjectOptions[subjectIndex].label}}
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+
+      <!-- 学生 -->
+      <view class="form-group">
+        <view class="form-label">学生姓名</view>
+        <input
+          class="form-input"
+          placeholder="选填"
+          value="{{form.student}}"
+          bindinput="onStudentInput"
+        />
+      </view>
+
+      <!-- 老师 -->
+      <view class="form-group">
+        <view class="form-label">授课老师</view>
+        <input
+          class="form-input"
+          placeholder="选填"
+          value="{{form.teacher}}"
+          bindinput="onTeacherInput"
+        />
+      </view>
+
+      <!-- 总课时 -->
+      <view class="form-group">
+        <view class="form-label">
+          <text>总课时</text>
+          <text class="required">*</text>
+        </view>
+        <input
+          class="form-input"
+          type="digit"
+          placeholder="例如：30"
+          value="{{form.totalHours}}"
+          bindinput="onTotalHoursInput"
+        />
+      </view>
+
+      <!-- 每次扣课时数 -->
+      <view class="form-group">
+        <view class="form-label">每次上课扣课时</view>
+        <input
+          class="form-input"
+          type="digit"
+          placeholder="默认为1"
+          value="{{form.deductionUnit}}"
+          bindinput="onDeductionUnitInput"
+        />
+      </view>
+
+      <!-- 开始日期 -->
+      <view class="form-group">
+        <view class="form-label">开始日期</view>
+        <picker mode="date" value="{{form.startDate}}" bindchange="onStartDateChange">
+          <view class="form-picker">
+            {{form.startDate || '选择日期'}}
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+
+      <!-- 过期日期 -->
+      <view class="form-group">
+        <view class="form-label">过期日期</view>
+        <picker mode="date" value="{{form.expiryDate}}" bindchange="onExpiryDateChange">
+          <view class="form-picker">
+            {{form.expiryDate || '选择日期'}}
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+
+      <!-- 低课时预警阈值 -->
+      <view class="form-group">
+        <view class="form-label">低课时预警（剩余课时）</view>
+        <input
+          class="form-input"
+          type="digit"
+          placeholder="默认3课时"
+          value="{{form.lowHoursThreshold}}"
+          bindinput="onThresholdInput"
+        />
+      </view>
+
+      <!-- 备注 -->
+      <view class="form-group">
+        <view class="form-label">备注</view>
+        <textarea
+          class="form-textarea"
+          placeholder="选填"
+          value="{{form.notes}}"
+          bindinput="onNotesInput"
+          auto-height
+        />
+      </view>
+    </view>
+
+    <!-- 提交按钮 -->
+    <view class="submit-section">
+      <button
+        class="btn btn-primary"
+        bindtap="onSubmitCourse"
+        disabled="{{submitting}}"
+        loading="{{submitting}}"
+      >
+        {{isEdit ? '保存修改' : '创建课程'}}
+      </button>
+    </view>
+  </view>
+
+  <!-- ==================== Tab: 固定排课 ==================== -->
+  <view class="tab-content" wx:if="{{activeTab === 'schedule'}}">
+
+    <!-- 已有排课列表 -->
+    <view class="card schedule-list" wx:if="{{schedules.length > 0}}">
+      <view class="card-title">当前排课</view>
+      <view
+        class="schedule-item"
+        wx:for="{{schedules}}"
+        wx:key="_id"
+      >
+        <view class="si-weekday">每{{item.weekdayLabel}}</view>
+        <view class="si-time">{{item.time}}</view>
+        <view class="si-status {{item.status}}">
+          {{item.status === 'active' ? '启用' : '暂停'}}
+        </view>
+        <view
+          class="si-delete"
+          data-schedule-id="{{item._id}}"
+          bindtap="onDeleteSchedule"
+        >✕</view>
+      </view>
+    </view>
+
+    <!-- 新增排课表单 -->
+    <view class="form-card">
+      <view class="card-title">新增排课</view>
+
+      <!-- 星期 -->
+      <view class="form-group">
+        <view class="form-label">上课星期</view>
+        <picker
+          range="{{weekdayOptions}}"
+          range-key="label"
+          value="{{weekdayIndex}}"
+          bindchange="onDayOfWeekChange"
+        >
+          <view class="form-picker">
+            {{weekdayOptions[weekdayIndex].label}}
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+
+      <!-- 时间 -->
+      <view class="form-group">
+        <view class="form-label">上课时间</view>
+        <input
+          class="form-input"
+          type="time"
+          value="{{scheduleForm.time}}"
+          bindinput="onTimeInput"
+        />
+      </view>
+
+      <!-- 生效日期（选填） -->
+      <view class="form-group">
+        <view class="form-label">生效日期</view>
+        <picker
+          mode="date"
+          value="{{scheduleForm.effectiveFrom}}"
+          bindchange="onEffectiveFromChange"
+        >
+          <view class="form-picker">
+            {{scheduleForm.effectiveFrom || '从今天开始'}}
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+
+      <button
+        class="btn btn-outline"
+        bindtap="onAddSchedule"
+        disabled="{{submitting}}"
+        loading="{{submitting}}"
+      >
+        + 添加排课
+      </button>
+    </view>
+
+  </view>
+
+</view>

@@ -1,0 +1,38 @@
+<!-- 骨架屏组件 -->
+<view class="skeleton-container">
+
+  <!-- Card 模式 -->
+  <block wx:if="{{type === 'card'}}">
+    <view class="sk-card" wx:for="{{items}}" wx:key="*this">
+      <view class="sk-line sk-line-long skeleton-animate"></view>
+      <view class="sk-line sk-line-short skeleton-animate"></view>
+      <view class="sk-bar skeleton-animate"></view>
+      <view class="sk-line sk-line-mid skeleton-animate"></view>
+    </view>
+  </block>
+
+  <!-- List 模式 -->
+  <block wx:if="{{type === 'list'}}">
+    <view class="sk-list-item" wx:for="{{items}}" wx:key="*this">
+      <view class="sk-avatar skeleton-animate"></view>
+      <view class="sk-list-content">
+        <view class="sk-line sk-line-long skeleton-animate"></view>
+        <view class="sk-line sk-line-short skeleton-animate"></view>
+      </view>
+    </view>
+  </block>
+
+  <!-- Detail 模式 -->
+  <block wx:if="{{type === 'detail'}}">
+    <view class="sk-detail">
+      <view class="sk-line sk-line-title skeleton-animate"></view>
+      <view class="sk-line sk-line-long skeleton-animate"></view>
+      <view class="sk-line sk-line-mid skeleton-animate"></view>
+      <view class="sk-line sk-line-long skeleton-animate"></view>
+      <view class="sk-bar skeleton-animate"></view>
+      <view class="sk-line sk-line-short skeleton-animate"></view>
+      <view class="sk-line sk-line-mid skeleton-animate"></view>
+    </view>
+  </block>
+
+</view>

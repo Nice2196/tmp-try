@@ -1,0 +1,66 @@
+<!-- 消课记录列表页 -->
+<view class="page-container" wx:if="{{!loading}}">
+
+  <!-- 课程名称 -->
+  <view class="course-header" wx:if="{{courseName}}">
+    <text class="course-title">{{courseName}}</text>
+    <text class="lesson-count">共 {{lessons.length}} 条记录</text>
+  </view>
+
+  <!-- 记录列表 -->
+  <view class="lesson-list" wx:if="{{lessons.length > 0}}">
+    <view
+      class="lesson-item"
+      wx:for="{{lessons}}"
+      wx:key="_id"
+    >
+      <view class="lesson-header">
+        <view class="lesson-date">{{item.lessonDate}}</view>
+        <view class="lesson-tag {{item.deductionType === 'auto' ? 'auto' : 'manual'}}">
+          {{item.deductionType === 'auto' ? '自动' : '手动'}}
+        </view>
+        <view class="lesson-tag {{item.status === 'cancelled' ? 'cancelled' : 'completed'}}">
+          {{item.status === 'cancelled' ? '已取消' : '已完成'}}
+        </view>
+      </view>
+
+      <view class="lesson-body">
+        <view class="lb-left">
+          <text class="lb-hours">-{{item.deductionHours}} 课时</text>
+          <text class="lb-time" wx:if="{{item.scheduledTime}}">{{item.scheduledTime}}</text>
+        </view>
+        <view class="lb-right" wx:if="{{item.notes}}">
+          <text class="lb-notes">{{item.notes}}</text>
+        </view>
+      </view>
+
+      <view class="lesson-footer">
+        <text class="lf-balance">剩余 {{item.afterRemaining}} / 总计 {{item.afterConsumed + item.afterRemaining}}</text>
+        <view
+          class="lf-cancel-btn"
+          wx:if="{{item.deductionType === 'manual' && item.status === 'completed'}}"
+          data-lesson-id="{{item._id}}"
+          data-type="{{item.deductionType}}"
+          bindtap="onCancelLesson"
+        >取消</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <empty-state
+    wx:else
+    icon="📋"
+    text="暂无消课记录"
+    subText="手动消课或等自动排课触发后产生"
+  />
+
+</view>
+
+<!-- 加载中 -->
+<view class="loading-container" wx:if="{{loading}}">
+  <text class="loading-text">加载中...</text>
+</view>
+
+<!-- 底部安全距离 -->
+<view class="safe-bottom"></view>

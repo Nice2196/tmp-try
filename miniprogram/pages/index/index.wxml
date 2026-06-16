@@ -1,0 +1,85 @@
+<!--
+  首页 - 课程总览
+  展示活跃课程卡片、预警横幅、快速操作入口
+-->
+<view class="page-container">
+
+  <!-- ==================== 统计概览卡片 ==================== -->
+  <view class="stats-row" wx:if="{{!isEmpty}}">
+    <view class="stat-item">
+      <text class="stat-value">{{stats.activeCourses || 0}}</text>
+      <text class="stat-label">活跃课程</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-value">{{stats.totalRemainingHours || 0}}</text>
+      <text class="stat-label">剩余课时</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-value">{{stats.monthlyDeductionHours || 0}}</text>
+      <text class="stat-label">本月消课</text>
+    </view>
+  </view>
+
+  <!-- ==================== 预警横幅 ==================== -->
+  <!-- 低课时预警 -->
+  <view class="warning-banner warning-low" wx:if="{{lowHoursWarnings.length > 0}}">
+    <text class="warning-icon">⚠️</text>
+    <text class="warning-text">
+      {{lowHoursWarnings.length}}门课程课时不足：
+      <block wx:for="{{lowHoursWarnings}}" wx:key="courseId">
+        {{item.courseName}}(剩{{item.remainingHours}}节)
+        <block wx:if="{{index < lowHoursWarnings.length - 1}}">、</block>
+      </block>
+    </text>
+  </view>
+
+  <!-- 即将过期预警 -->
+  <view class="warning-banner warning-expiry" wx:if="{{expiryWarnings.length > 0}}">
+    <text class="warning-icon">⏰</text>
+    <text class="warning-text">
+      {{expiryWarnings.length}}门课程即将过期：
+      <block wx:for="{{expiryWarnings}}" wx:key="courseId">
+        {{item.courseName}}({{item.daysUntilExpiry}}天后)
+        <block wx:if="{{index < expiryWarnings.length - 1}}">、</block>
+      </block>
+    </text>
+  </view>
+
+  <!-- ==================== 课程列表 ==================== -->
+  <block wx:if="{{!loading}}">
+    <!-- 空状态 -->
+    <empty-state
+      wx:if="{{isEmpty}}"
+      icon="📚"
+      text="还没有课程记录"
+      subText="点击下方按钮添加第一门课程"
+    />
+
+    <!-- 课程卡片列表 -->
+    <view class="course-list" wx:else>
+      <course-card
+        wx:for="{{courses}}"
+        wx:key="_id"
+        course="{{item}}"
+        bind:tap="onCourseTap"
+        bind:deduct="onQuickDeduct"
+      />
+    </view>
+  </block>
+
+  <!-- 加载中 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- ==================== 底部新增按钮 ==================== -->
+  <view class="fab-container">
+    <button class="fab-btn btn-primary" bindtap="onAddCourse">
+      <text class="fab-icon">+</text>
+      <text>新增课程</text>
+    </button>
+  </view>
+
+</view>

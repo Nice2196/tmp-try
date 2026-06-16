@@ -1,0 +1,264 @@
+/**
+ * 课程详情页样式
+ */
+.page-container {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  padding: var(--spacing-md);
+}
+
+/* 课程信息卡片 */
+.info-card {
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md);
+}
+
+.course-name {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-tag {
+  font-size: var(--font-size-xs);
+  padding: 4rpx 16rpx;
+  border-radius: var(--radius-round);
+  margin-left: var(--spacing-sm);
+  flex-shrink: 0;
+}
+
+.status-tag.active {
+  color: var(--color-success);
+  background: rgba(82, 196, 26, 0.1);
+}
+
+.status-tag.paused {
+  color: var(--color-warning);
+  background: rgba(250, 173, 20, 0.1);
+}
+
+.status-tag.completed {
+  color: var(--color-primary);
+  background: rgba(24, 144, 255, 0.1);
+}
+
+.status-tag.expired {
+  color: var(--color-expired);
+  background: rgba(255, 77, 79, 0.1);
+}
+
+/* 进度条 */
+.progress-section {
+  margin-bottom: var(--spacing-lg);
+}
+
+.progress-bar {
+  height: 12rpx;
+  background: var(--color-border);
+  border-radius: 6rpx;
+  overflow: hidden;
+  margin-bottom: var(--spacing-xs);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--color-primary), var(--color-success));
+  border-radius: 6rpx;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* 详情行 */
+.info-rows {
+  border-top: 1rpx solid var(--color-border);
+  padding-top: var(--spacing-md);
+}
+
+.info-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--spacing-xs) 0;
+}
+
+.info-label {
+  width: 140rpx;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.info-value {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+/* 固定排课 */
+.schedule-card {
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.section-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.add-schedule-btn {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  font-weight: 400;
+}
+
+.schedule-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1rpx solid var(--color-border);
+}
+
+.schedule-item:last-child {
+  border-bottom: none;
+}
+
+.schedule-item:active {
+  background: var(--color-bg);
+  margin: 0 calc(-1 * var(--spacing-lg));
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
+}
+
+.schedule-weekday {
+  width: 80rpx;
+}
+
+.weekday-label {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.schedule-time {
+  flex: 1;
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+}
+
+.schedule-status {
+  font-size: var(--font-size-xs);
+  padding: 2rpx 12rpx;
+  border-radius: var(--radius-round);
+}
+
+.schedule-status.active {
+  color: var(--color-success);
+  background: rgba(82, 196, 26, 0.1);
+}
+
+.schedule-status.paused {
+  color: var(--color-warning);
+  background: rgba(250, 173, 20, 0.1);
+}
+
+.empty-schedule {
+  text-align: center;
+  padding: var(--spacing-xl) 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.empty-schedule .sub-text {
+  display: block;
+  font-size: var(--font-size-xs);
+  margin-top: var(--spacing-xs);
+}
+
+/* 操作按钮 */
+.action-buttons {
+  margin-top: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.btn {
+  width: 100%;
+  height: 88rpx;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.btn-outline {
+  background: var(--color-card);
+  color: var(--color-text-primary);
+  border: 1rpx solid var(--color-border);
+}
+
+.btn-warning {
+  color: var(--color-warning);
+  border-color: var(--color-warning);
+}
+
+.btn-success {
+  color: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.btn-danger {
+  color: var(--color-expired);
+  border-color: var(--color-expired);
+}
+
+/* 加载 */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+}
+
+.loading-text {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* 底部安全距离 */
+.safe-bottom {
+  height: 60rpx;
+}

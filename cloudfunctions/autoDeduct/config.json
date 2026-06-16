@@ -1,0 +1,9 @@
+{
+  "triggers": [
+    {
+      "name": "autoDeductHourly",
+      "type": "timer",
+      "config": "0 0 * * * * *"
+    }
+  ]
+}

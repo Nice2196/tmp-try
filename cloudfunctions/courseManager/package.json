@@ -1,0 +1,9 @@
+{
+  "name": "course-manager",
+  "version": "1.0.0",
+  "description": "课程管理云函数 - 课程CRUD + 状态自动判定 + 审计日志",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

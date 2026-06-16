@@ -1,0 +1,31 @@
+<!-- 统计图表组件 -->
+<view class="chart-container" style="height: {{height}}rpx;">
+  <!-- ECharts Canvas -->
+  <view wx:if="{{!fallback && option}}">
+    <ec-canvas
+      id="echarts-canvas"
+      canvas-id="echarts-canvas"
+      ec="{{echartsInstance}}"
+    ></ec-canvas>
+  </view>
+
+  <!-- 回退：纯文字数据展示 -->
+  <view class="fallback-view" wx:if="{{fallback}}">
+    <view class="fallback-title">图表数据摘要</view>
+    <view class="fallback-list">
+      <view
+        class="fallback-item"
+        wx:for="{{option.series[0].data}}"
+        wx:key="index"
+      >
+        <view class="fb-name">{{option.xAxis.type === 'category' ? option.xAxis.data[index] : item.name}}</view>
+        <view class="fb-value">{{item.value !== undefined ? item.value : item}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 无数据 -->
+  <view class="empty-chart" wx:if="{{!option}}">
+    <text>暂无图表数据</text>
+  </view>
+</view>
