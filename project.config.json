@@ -29,11 +29,26 @@
       "outputPath": ""
     },
     "packNpmManually": false,
-    "packNpmRelationList": []
+    "packNpmRelationList": [],
+    "compileWorklet": false,
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true
   },
   "appid": "wx73b9c9702f51e839",
   "projectname": "SmartHours",
   "libVersion": "3.3.4",
   "condition": {},
-  "simulatorPluginLibVersion": {}
+  "simulatorPluginLibVersion": {},
+  "compileType": "miniprogram",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "editorSetting": {}
 }

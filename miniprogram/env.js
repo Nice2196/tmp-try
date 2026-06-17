@@ -13,7 +13,7 @@
  */
 module.exports = {
   /** 云开发环境ID（部署时替换为实际值） */
-  CLOUD_ENV_ID: 'your-cloud-env-id',
+  CLOUD_ENV_ID: 'cloud1-d7gjypgxued9a2b27',
 
   /** 应用版本号 */
   APP_VERSION: '1.0.0',
