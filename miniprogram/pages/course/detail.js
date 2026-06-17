@@ -43,7 +43,7 @@ Page({
   async loadData() {
     this.setData({ loading: true })
     try {
-      const res = await callCloud('courseManager', {
+      const res = await callCloud('course-manager', {
         action: 'get',
         data: { id: this.data.courseId }
       })
@@ -117,7 +117,7 @@ Page({
     if (!confirmed) return
 
     try {
-      await callCloud('courseManager', {
+      await callCloud('course-manager', {
         action: newStatus,
         data: { id: this.data.courseId }
       })
@@ -148,7 +148,7 @@ Page({
     if (!confirmed) return
 
     try {
-      await callCloud('courseManager', {
+      await callCloud('course-manager', {
         action: 'delete',
         data: { id: this.data.courseId }
       })

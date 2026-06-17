@@ -46,7 +46,7 @@ Page({
    */
   async loadCourses() {
     try {
-      const res = await callCloud('courseManager', {
+      const res = await callCloud('course-manager', {
         action: 'list',
         data: {}
       })
@@ -139,7 +139,7 @@ Page({
     this.setData({ submitting: true })
 
     try {
-      await callCloud('lessonManager', {
+      await callCloud('lesson-manager', {
         action: 'add',
         data: {
           courseId: selectedCourse._id,

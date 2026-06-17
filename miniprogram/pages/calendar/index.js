@@ -52,7 +52,7 @@ Page({
     this.setData({ loading: true })
 
     try {
-      const res = await callCloud('calendarQuery', { year, month })
+      const res = await callCloud('calendar-query', { year, month })
 
       if (res.data) {
         this.setData({

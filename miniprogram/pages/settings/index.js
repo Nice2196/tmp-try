@@ -39,7 +39,7 @@ Page({
     try {
       // 使用最小的合法请求来验证云开发连通性
       const res = await wx.cloud.callFunction({
-        name: 'courseManager',
+        name: 'course-manager',
         data: { action: 'list', data: { pageSize: 1 } }
       })
       // 如果成功，说明云开发正常
@@ -75,7 +75,7 @@ Page({
 
         try {
           const { callCloud } = require('../../utils/auth')
-          const result = await callCloud('initDB', {})
+          const result = await callCloud('init-db', {})
 
           wx.showToast({ title: '索引创建成功', icon: 'success' })
           this.setData({ dbInitialized: true })

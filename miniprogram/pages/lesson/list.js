@@ -42,7 +42,7 @@ Page({
   async loadData() {
     this.setData({ loading: true })
     try {
-      const res = await callCloud('lessonManager', {
+      const res = await callCloud('lesson-manager', {
         action: 'list',
         data: {
           courseId: this.data.courseId
@@ -86,7 +86,7 @@ Page({
 
     this.setData({ operating: true })
     try {
-      await callCloud('lessonManager', {
+      await callCloud('lesson-manager', {
         action: 'cancel',
         data: { lessonRecordId: lessonId }
       })

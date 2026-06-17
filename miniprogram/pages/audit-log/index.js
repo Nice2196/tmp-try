@@ -73,7 +73,7 @@ Page({
         if (filterEndDate) filters.dateRange.end = filterEndDate
       }
 
-      const res = await callCloud('auditQuery', {
+      const res = await callCloud('audit-query', {
         pageNum: page,
         pageSize: this.data.pageSize,
         filters

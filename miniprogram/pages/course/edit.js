@@ -83,7 +83,7 @@ Page({
    */
   async loadCourseData() {
     try {
-      const res = await callCloud('courseManager', {
+      const res = await callCloud('course-manager', {
         action: 'get',
         data: { id: this.data.courseId }
       })
@@ -183,7 +183,7 @@ Page({
 
     try {
       if (isEdit) {
-        await callCloud('courseManager', {
+        await callCloud('course-manager', {
           action: 'update',
           data: {
             id: courseId,
@@ -202,7 +202,7 @@ Page({
         })
         wx.showToast({ title: '课程已更新', icon: 'success' })
       } else {
-        await callCloud('courseManager', {
+        await callCloud('course-manager', {
           action: 'create',
           data: {
             name: form.name,
@@ -258,7 +258,7 @@ Page({
     this.setData({ submitting: true })
 
     try {
-      await callCloud('scheduleManager', {
+      await callCloud('schedule-manager', {
         action: 'create',
         data: {
           courseId,
@@ -305,7 +305,7 @@ Page({
     if (!confirmed) return
 
     try {
-      await callCloud('scheduleManager', {
+      await callCloud('schedule-manager', {
         action: 'delete',
         data: { id: scheduleId }
       })

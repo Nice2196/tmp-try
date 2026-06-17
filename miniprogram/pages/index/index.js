@@ -60,8 +60,8 @@ Page({
     try {
       // 并行请求课程列表和统计数据
       const [courseRes, statsRes] = await Promise.all([
-        callCloud('courseManager', { action: 'list', data: {} }),
-        callCloud('statsQuery', {})
+        callCloud('course-manager', { action: 'list', data: {} }),
+        callCloud('stats-query', {})
       ])
 
       const courses = courseRes.data ? courseRes.data.courses : []

@@ -70,7 +70,7 @@ App({
       }
 
       wx.cloud.callFunction({
-        name: 'courseManager',
+        name: 'course-manager',
         data: { action: 'list', data: { pageSize: 1 } }
       }).then(res => {
         // 任何云函数调用都会自动注入 _openid 过滤，

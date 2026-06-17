@@ -45,8 +45,8 @@ Page({
   async loadData() {
     this.setData({ loading: true })
     try {
-      // statsQuery 一次性返回所有统计数据
-      const statsRes = await callCloud('statsQuery', {})
+      // stats-query 一次性返回所有统计数据
+      const statsRes = await callCloud('stats-query', {})
 
       const summary = statsRes.data ? statsRes.data.summary : null
       const courseBreakdown = (statsRes.data && statsRes.data.courseBreakdown) ? statsRes.data.courseBreakdown : []
