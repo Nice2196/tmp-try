@@ -3,16 +3,16 @@
     "allow": [
       "Bash",
       "Read",
-      "Write(/Volumes/macSdcard/AICoding/tmp_try/*)",
-      "Edit(/Volumes/macSdcard/AICoding/tmp_try/*)",
-      "Glob(/Volumes/macSdcard/AICoding/tmp_try/*)",
-      "Grep(/Volumes/macSdcard/AICoding/tmp_try/*)",
+      "Write(/Volumes/macSdcard/AICoding/smart-hours/*)",
+      "Edit(/Volumes/macSdcard/AICoding/smart-hours/*)",
+      "Glob(/Volumes/macSdcard/AICoding/smart-hours/*)",
+      "Grep(/Volumes/macSdcard/AICoding/smart-hours/*)",
       "WebFetch",
       "WebSearch"
     ],
     "defaultMode": "acceptEdits",
     "additionalDirectories": [
-      "/Volumes/macSdcard/AICoding/tmp_try"
+      "/Volumes/macSdcard/AICoding/smart-hours"
     ]
   },
   "language": "zh-CN"
