@@ -82,8 +82,8 @@
 
 | Agent `model` 参数 | 实际模型名 | 代理路由 | API 提供商 |
 |-------------------|-----------|---------|-----------|
-| `"sonnet"` (默认) | `deepseek-v4-pro` | `deepseek-*` → DeepSeek | `api.deepseek.com/anthropic` |
-| `"haiku"` | `mimo-v2.5-pro` | `mimo-*` → MiMo | `api.xiaomimimo.com/anthropic` |
+| `"haiku"` (默认) | `mimo-v2.5-pro` | `mimo-*` → MiMo | `api.xiaomimimo.com/anthropic` |
+| `"sonnet"` | `deepseek-v4-pro` | `deepseek-*` → DeepSeek | `api.deepseek.com/anthropic` |
 
 > 验证方式：`grep -E '\[(deepseek|mimo)\]' proxy.log` 查看代理实际路由记录。
 
@@ -96,13 +96,13 @@ Phase 2 (DeepSeek): agent("DB Schema设计", { model: "sonnet", skill: "database
 Phase 3 (DeepSeek): agent("云函数实现",   { model: "sonnet", skill: "backend-development" })
 Phase 4 (DeepSeek): agent("更多云函数",   { model: "sonnet", skill: "backend-development" })
 Phase 5 (MiMo):  agent("前端UI实现",   { model: "haiku" })
-Phase 6 (DeepSeek): parallel(/code-review, /security-review, /simplify)
-                 → 主会话直接执行（DeepSeek）
+Phase 6 (DeepSeek): 主会话 /model sonnet 切换后执行 parallel(/code-review, /security-review, /simplify)
+                 → 或用 agent("Review", { model: "sonnet" }) 子Agent 执行
 Phase 7 (MiMo):  agent("测试计划",     { model: "haiku" })
 Phase 8 (MiMo):  agent("部署文档+CHANGELOG", { model: "haiku" })
 ```
 
-> **为什么**：代理按模型名前缀路由。不加 `model: "haiku"` 时子 Agent 继承主会话模型 `deepseek-v4-pro`，MiMo 阶段会被错误路由到 DeepSeek。
+> **为什么**：主会话默认 `mimo-v2.5-pro`（MiMo），按模型名前缀路由。不加 `model: "sonnet"` 时子 Agent 继承主会话 MiMo，DeepSeek 阶段会被错误路由到 MiMo。
 
 #### ⚠️ 每阶段完成后必须立即提交（防漏）
 
@@ -132,8 +132,9 @@ git add -A && git commit -m "<phase产出>" && git push origin <branch>
 
 | 模型前缀 | 目标提供商 | API Base | Auth | 用途 |
 |----------|-----------|---------|------|------|
-| `deepseek-*` | DeepSeek V4 Pro | `api.deepseek.com/anthropic` | `x-api-key` | 高复杂度推理任务 |
-| `mimo-*` | MiMo-V2.5 系列 | `api.xiaomimimo.com/anthropic` | `api-key` | 中低复杂度任务、视觉识别 |
+| `deepseek-*` | DeepSeek V4 Pro | `api.deepseek.com/anthropic` | `x-api-key` | 方案规划/架构设计/核心编码/CodeReview |
+| `mimo-*` | MiMo-V2.5 系列 | `api.xiaomimimo.com/anthropic` | `api-key` | 日常对话/产品文档/前端UI/测试/发布 |
+| 未匹配 | MiMo（默认） | `api.xiaomimimo.com/anthropic` | `api-key` | fallback，安全兜底 |
 
 ### 流水线各阶段模型分配
 
@@ -146,11 +147,11 @@ git add -A && git commit -m "<phase产出>" && git push origin <branch>
 | 3. 架构+DB | 🔴 高 | **`"sonnet"`** | `deepseek-v4-pro` | DB Schema + 云函数架构 |
 | 4. 核心编码 | 🔴 高 | **`"sonnet"`** | `deepseek-v4-pro` | 云函数 + 公共模块 |
 | 5. 前端UI | 🟡 中/低 | **`"haiku"`** | `mimo-v2.5-pro` | WXML/WXSS/JS 页面+组件 |
-| 6. Code Review | 🔴 高 | **主会话** | `deepseek-v4-pro` | 全量审查+安全审查+修复 |
+| 6. Code Review | 🔴 高 | **`"sonnet"`** | `deepseek-v4-pro` | 用 `/model sonnet` 切换或用子Agent |
 | 7. 测试 | 🟡 中/低 | **`"haiku"`** | `mimo-v2.5-pro` | 测试计划+验证用例 |
 | 8. 发布上线 | 🟡 中/低 | **`"haiku"`** | `mimo-v2.5-pro` | 部署文档+手册+CHANGELOG |
 
-**Agent 调用时务必带 `model` 参数**，否则代理默认路由到 DeepSeek。
+**Agent 调用时务必带 `model` 参数**，否则代理默认路由到 MiMo。
 
 #### 历史模型使用审计
 
