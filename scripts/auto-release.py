@@ -5,15 +5,24 @@
 用法：python3.11 scripts/auto-release.py [版本描述]
 """
 
+import json
 import os
+import ssl
 import subprocess
 import sys
+import urllib.request
 from datetime import datetime
+
+# 创建忽略 SSL 证书验证的上下文
+ssl_context = ssl.create_default_context()
+ssl_context.check_hostname = False
+ssl_context.verify_mode = ssl.CERT_NONE
 
 # ============================================================
 # 配置
 # ============================================================
 APPID = "wx73b9c9702f51e839"
+APPSECRET = "b4165d1d0d4b6a1d27bcf4bd1219a2dc"
 PROJECT_DIR = "/Volumes/macSdcard/AICoding/smart-hours"
 KEY_PATH = os.path.join(PROJECT_DIR, f"private.{APPID}.key")
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "release")
@@ -223,6 +232,58 @@ def get_preview_qr(version):
         return False
 
 
+def get_access_token():
+    """获取 access_token"""
+    log("获取 access_token...")
+    url = f"https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={APPID}&secret={APPSECRET}"
+    try:
+        with urllib.request.urlopen(url, timeout=30, context=ssl_context) as response:
+            data = json.loads(response.read().decode("utf-8"))
+            if "access_token" in data:
+                log(f"access_token 获取成功（有效期: {data.get('expires_in')}s）")
+                return data["access_token"]
+            else:
+                log(f"获取失败: {data}", "ERROR")
+                return None
+    except Exception as e:
+        log(f"获取异常: {e}", "ERROR")
+        return None
+
+
+def get_experience_qr_by_api():
+    """使用微信 API 获取体验版二维码"""
+    log("通过 API 获取体验版二维码...")
+
+    # 获取 access_token
+    token = get_access_token()
+    if not token:
+        return False
+
+    # 获取体验码
+    url = f"https://api.weixin.qq.com/wxa/get_qrcode?access_token={token}"
+    try:
+        with urllib.request.urlopen(url, timeout=30, context=ssl_context) as response:
+            result = response.read()
+            # 检查是否是图片
+            if len(result) > 1000 and not result.startswith(b"{"):
+                output_path = os.path.join(OUTPUT_DIR, "experience-qr.png")
+                with open(output_path, "wb") as f:
+                    f.write(result)
+                log(f"体验版二维码已保存: {output_path}")
+                return True
+            else:
+                # 可能是错误响应
+                try:
+                    data = json.loads(result)
+                    log(f"获取失败: {data}", "ERROR")
+                except:
+                    log(f"获取失败: {result}", "ERROR")
+                return False
+    except Exception as e:
+        log(f"获取异常: {e}", "ERROR")
+        return False
+
+
 # ============================================================
 # 主流程
 # ============================================================
@@ -257,9 +318,11 @@ def main():
     # Step 3: 设置体验版
     set_experience_version(version)
 
-    # Step 4: 生成预览码和体验码
+    # Step 4: 生成预览码
     get_preview_qr(version)
-    get_experience_qr(version)
+
+    # Step 5: 通过 API 获取体验码
+    get_experience_qr_by_api()
 
     # 完成
     print()
