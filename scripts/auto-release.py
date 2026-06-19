@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.11
 """
 小程序自动发布脚本
-功能：上传代码 → 获取预览码 → 获取体验码
+功能：上传代码 → 设置体验版 → 获取预览码 → 获取体验码
 用法：python3.11 scripts/auto-release.py [版本描述]
 """
 
@@ -186,6 +186,28 @@ def get_experience_qr(access_token):
     return False
 
 
+def set_experience_version(access_token):
+    """设置体验版"""
+    log("设置体验版...")
+    url = f"https://api.weixin.qq.com/wxa/set_experiencing_version?access_token={access_token}"
+    data = json.dumps({"action": "set"}).encode("utf-8")
+    result, status = http_post(url, data=data, timeout=30)
+
+    if status == 200:
+        try:
+            resp = json.loads(result)
+            if resp.get("errcode") == 0:
+                log("体验版设置成功！")
+                return True
+            else:
+                log(f"设置失败: {resp.get('errmsg', resp)}", "ERROR")
+        except:
+            log(f"设置失败: {result}", "ERROR")
+    else:
+        log(f"请求失败: HTTP {status}", "ERROR")
+    return False
+
+
 # ============================================================
 # 主流程
 # ============================================================
@@ -220,9 +242,12 @@ def main():
     # Step 3: 获取预览二维码
     get_preview_qr()
 
-    # Step 4: 获取体验版二维码
+    # Step 4: 设置体验版并获取体验码
     token = get_access_token()
     if token:
+        # 先设置体验版
+        set_experience_version(token)
+        # 再获取体验版二维码
         get_experience_qr(token)
 
     # 完成
