@@ -40,7 +40,7 @@ def log(msg, level="INFO"):
 
 
 def get_version():
-    """获取新版本号"""
+    """获取新版本号并同步到所有相关文件"""
     if os.path.exists(VERSION_FILE):
         with open(VERSION_FILE, "r") as f:
             current = f.read().strip()
@@ -54,10 +54,69 @@ def get_version():
     else:
         new_version = "1.0.1"
 
+    # 1. 更新 .version 文件
     with open(VERSION_FILE, "w") as f:
         f.write(new_version)
 
+    # 2. 更新 project.config.json 中的版本号
+    update_project_config_version(new_version)
+
+    # 3. 更新 miniprogram/app.js 中的版本号
+    update_app_js_version(new_version)
+
     return new_version
+
+
+def update_project_config_version(version):
+    """更新 project.config.json 中的版本号"""
+    config_path = os.path.join(PROJECT_DIR, "project.config.json")
+    try:
+        with open(config_path, "r", encoding="utf-8") as f:
+            config = json.load(f)
+
+        # 添加或更新 version 字段
+        config["version"] = version
+
+        with open(config_path, "w", encoding="utf-8") as f:
+            json.dump(config, f, indent=2, ensure_ascii=False)
+            f.write("\n")
+
+        log(f"project.config.json 版本号已更新: {version}")
+    except Exception as e:
+        log(f"更新 project.config.json 失败: {e}", "WARN")
+
+
+def update_app_js_version(version):
+    """更新 miniprogram/app.js 中的版本号"""
+    app_js_path = os.path.join(PROJECT_DIR, "miniprogram", "app.js")
+    try:
+        with open(app_js_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        # 查找并替换 globalData 中的 version 字段
+        import re
+
+        # 匹配 globalData: { ... version: 'x.x.x' ... }
+        pattern = r"(globalData:\s*\{[^}]*?version:\s*['\"])([\d.]+)(['\"])"
+        replacement = rf"\g<1>{version}\3"
+
+        new_content, count = re.subn(pattern, replacement, content, flags=re.DOTALL)
+
+        if count == 0:
+            # 如果没有找到 version 字段，在 globalData 中添加
+            pattern = r"(globalData:\s*\{)"
+            replacement = rf"\g<1>\n    version: '{version}',"
+            new_content, count = re.subn(pattern, replacement, content, flags=re.DOTALL)
+
+        if count > 0:
+            with open(app_js_path, "w", encoding="utf-8") as f:
+                f.write(new_content)
+            log(f"app.js 版本号已更新: {version}")
+        else:
+            log("app.js 中未找到 globalData，跳过更新", "WARN")
+
+    except Exception as e:
+        log(f"更新 app.js 失败: {e}", "WARN")
 
 
 def check_prerequisites():

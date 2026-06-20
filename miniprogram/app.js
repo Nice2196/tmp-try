@@ -51,7 +51,10 @@ App({
 
     /** 当前选中的月份（用于日历页状态保持） */
     currentCalendarYear: new Date().getFullYear(),
-    currentCalendarMonth: new Date().getMonth() + 1
+    currentCalendarMonth: new Date().getMonth() + 1,
+
+    /** 应用版本号（由 auto-release.py 自动更新） */
+    version: '1.0.13'
   },
 
   /**

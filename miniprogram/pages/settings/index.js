@@ -27,6 +27,9 @@ Page({
   },
 
   onLoad() {
+    // 获取版本号（从 app.js globalData 同步）
+    this.setData({ version: app.globalData.version || '1.0.0' })
+
     // 恢复缓存用户信息
     const userInfo = wx.getStorageSync('userInfo')
     if (userInfo) {
