@@ -168,15 +168,19 @@ def upload_code(version, desc):
 
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+        # 输出详细日志便于调试
+        if result.stdout:
+            for line in result.stdout.split("\n"):
+                if line.strip():
+                    log(f"[stdout] {line.strip()}")
+
         if result.returncode == 0:
             log("上传成功！")
-            # 提取包大小信息
-            for line in result.stdout.split("\n"):
-                if "size" in line.lower() or "包大小" in line:
-                    log(line.strip())
             return True
         else:
-            log(f"上传失败: {result.stderr}", "ERROR")
+            log(f"上传失败 (returncode={result.returncode})", "ERROR")
+            if result.stderr:
+                log(f"[stderr] {result.stderr}", "ERROR")
             return False
     except subprocess.TimeoutExpired:
         log("上传超时", "ERROR")
