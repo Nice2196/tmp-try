@@ -5,29 +5,40 @@
   <view class="card">
     <view class="card-title">用户信息</view>
 
-    <!-- 用户头像昵称（Bug 11 修复） -->
+    <!-- 用户头像昵称（Bug 11 修复：chooseAvatar + type="nickname"） -->
     <view class="setting-item user-profile">
-      <image
-        class="user-avatar"
-        src="{{avatarUrl || '/images/default-avatar.png'}}"
-        mode="aspectFill"
-        wx:if="{{avatarUrl}}"
-      />
-      <view class="user-avatar-placeholder" wx:else>
-        <text>👤</text>
-      </view>
+      <button
+        class="avatar-btn"
+        open-type="chooseAvatar"
+        bindchooseavatar="onChooseAvatar"
+      >
+        <image
+          class="user-avatar"
+          src="{{avatarUrl || '/images/default-avatar.png'}}"
+          mode="aspectFill"
+          wx:if="{{avatarUrl}}"
+        />
+        <view class="user-avatar-placeholder" wx:else>
+          <text>👤</text>
+        </view>
+      </button>
       <view class="si-left">
         <text class="si-label">{{nickname || '微信用户'}}</text>
-        <text class="si-value">点击下方按钮获取昵称和头像</text>
+        <text class="si-value">点击头像更换，下方输入昵称</text>
       </view>
     </view>
 
-    <view class="setting-item" bindtap="onGetUserProfile">
+    <view class="setting-item">
       <view class="si-left">
-        <text class="si-label" wx:if="{{!nickname}}">获取微信昵称</text>
-        <text class="si-label" wx:else>更新昵称</text>
+        <text class="si-label">昵称</text>
       </view>
-      <text class="si-action">{{nickname ? '同步' : '获取'}}</text>
+      <input
+        class="si-input si-input-wide"
+        type="nickname"
+        placeholder="请输入昵称"
+        value="{{nickname}}"
+        bindblur="onNicknameBlur"
+      />
     </view>
 
     <!-- OpenID（调试用） -->

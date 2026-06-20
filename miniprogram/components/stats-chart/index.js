@@ -34,15 +34,12 @@ Component({
     attached() {
       this._echartsReady = false
 
-      // 检测 echarts 是否可用（占位模块 init 返回 null）
+      // 检测 echarts 是否可用
+      // 占位模块仅导出 { init }（1个key）；真实 echarts-for-weixin 导出完整 API（>1个key）
+      // 不调用 init() 测试，因为真实 echarts.init 需要 canvas 参数，零参数会抛异常
       try {
-        const testInit = echarts.init
-        if (testInit && typeof testInit === 'function') {
-          // 测试调用看是否抛异常或返回 null
-          const result = testInit()
-          if (result !== null) {
-            this._echartsReady = true
-          }
+        if (echarts && typeof echarts.init === 'function' && Object.keys(echarts).length > 1) {
+          this._echartsReady = true
         }
       } catch (_) {
         this._echartsReady = false

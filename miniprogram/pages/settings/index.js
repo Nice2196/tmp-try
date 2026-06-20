@@ -131,27 +131,27 @@ Page({
   },
 
   /**
-   * 获取微信用户信息（昵称/头像，Bug 11 修复）
+   * 选择头像（Bug 11 修复：使用 open-type="chooseAvatar" 替代废弃的 wx.getUserProfile）
    */
-  onGetUserProfile() {
-    wx.getUserProfile({
-      desc: '用于展示用户信息',
-      success: (res) => {
-        const userInfo = res.userInfo
-        this.setData({
-          nickname: userInfo.nickName || '',
-          avatarUrl: userInfo.avatarUrl || ''
-        })
-        // 缓存到本地
-        wx.setStorageSync('userInfo', userInfo)
-        app.globalData.userInfo = userInfo
-        wx.showToast({ title: '已更新', icon: 'success' })
-      },
-      fail: (err) => {
-        console.error('[settings] 获取用户信息失败:', err)
-        wx.showToast({ title: '获取失败，请重试', icon: 'none' })
-      }
-    })
+  onChooseAvatar(e) {
+    const avatarUrl = e.detail.avatarUrl
+    if (!avatarUrl) return
+    this.setData({ avatarUrl })
+    const userInfo = { ...wx.getStorageSync('userInfo'), avatarUrl }
+    wx.setStorageSync('userInfo', userInfo)
+    app.globalData.userInfo = userInfo
+  },
+
+  /**
+   * 输入昵称（Bug 11 修复：使用 type="nickname" 替代废弃的 wx.getUserProfile）
+   */
+  onNicknameBlur(e) {
+    const nickname = e.detail.value
+    if (!nickname) return
+    this.setData({ nickname })
+    const userInfo = { ...wx.getStorageSync('userInfo'), nickName: nickname }
+    wx.setStorageSync('userInfo', userInfo)
+    app.globalData.userInfo = userInfo
   },
 
   /**
