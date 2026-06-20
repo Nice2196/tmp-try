@@ -136,7 +136,7 @@ def check_prerequisites():
             ["npx", "miniprogram-ci", "--version"],
             capture_output=True,
             text=True,
-            timeout=10,
+            timeout=60,
         )
         log(f"miniprogram-ci 版本: {result.stdout.strip()}")
     except Exception as e:
