@@ -45,6 +45,19 @@ Page({
   },
 
   /**
+   * 页面显示时刷新数据（Bug 7 修复）
+   *
+   * 当用户从手动消课页返回时，onShow 会触发，确保日历数据是最新的。
+   * 首次加载时 _hasLoaded 为 false，由 onLoad 负责初始加载，
+   * 避免重复请求。
+   */
+  onShow() {
+    if (this._hasLoaded) {
+      this.loadMonthData()
+    }
+  },
+
+  /**
    * 加载当前月份数据
    */
   async loadMonthData() {
@@ -59,6 +72,7 @@ Page({
           days: res.data.days,
           loading: false
         })
+        this._hasLoaded = true
       }
     } catch (err) {
       this.setData({ loading: false })

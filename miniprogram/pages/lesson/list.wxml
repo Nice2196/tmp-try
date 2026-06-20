@@ -15,7 +15,7 @@
       wx:key="_id"
     >
       <view class="lesson-header">
-        <view class="lesson-date">{{item.lessonDate}}</view>
+        <view class="lesson-date">{{item.displayDate || item.lessonDate}}</view>
         <view class="lesson-tag {{item.deductionType === 'auto' ? 'auto' : 'manual'}}">
           {{item.deductionType === 'auto' ? '自动' : '手动'}}
         </view>
@@ -27,7 +27,7 @@
       <view class="lesson-body">
         <view class="lb-left">
           <text class="lb-hours">-{{item.deductionHours}} 课时</text>
-          <text class="lb-time" wx:if="{{item.scheduledTime}}">{{item.scheduledTime}}</text>
+          <text class="lb-time" wx:if="{{item.displayTime}}">{{item.displayTime}}</text>
         </view>
         <view class="lb-right" wx:if="{{item.notes}}">
           <text class="lb-notes">{{item.notes}}</text>

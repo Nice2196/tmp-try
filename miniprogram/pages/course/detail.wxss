@@ -111,6 +111,9 @@
   font-size: var(--font-size-sm);
   color: var(--color-text-primary);
   flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* 固定排课 */
@@ -169,6 +172,9 @@
   flex: 1;
   font-size: var(--font-size-md);
   color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .schedule-status {

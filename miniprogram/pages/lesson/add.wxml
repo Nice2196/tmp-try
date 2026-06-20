@@ -28,7 +28,7 @@
     <view class="course-info" wx:if="{{selectedCourse}}">
       <view class="ci-row">
         <text class="ci-label">课程类型</text>
-        <text class="ci-value">{{selectedCourse.courseType}}</text>
+        <text class="ci-value">{{selectedCourse.courseTypeLabel || selectedCourse.courseType}}</text>
       </view>
       <view class="ci-row">
         <text class="ci-label">剩余课时</text>

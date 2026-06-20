@@ -62,13 +62,13 @@
       bindtap="onLogTap"
     >
       <view class="log-header">
-        <view class="log-action-tag">{{item.actionType}}</view>
+        <view class="log-action-tag">{{item.actionTypeLabel || item.actionType}}</view>
         <view class="log-course">{{item.courseName || '-'}}</view>
         <view class="log-trigger-tag {{item.trigger}}">
-          {{item.trigger === 'auto_scheduler' ? '自动' : '手动'}}
+          {{item.triggerLabel || (item.trigger === 'auto_scheduler' ? '自动' : '手动')}}
         </view>
       </view>
-      <view class="log-time">{{item.createdAt}}</view>
+      <view class="log-time">{{item.displayTime || item.createdAt}}</view>
     </view>
   </view>
 

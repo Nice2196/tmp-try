@@ -20,14 +20,25 @@
 
         <!-- 课程标记点 -->
         <view class="cell-dots" wx:if="{{item.info && item.info.lessonCount > 0}}">
-          <!-- 状态色点 -->
-          <view
-            class="dot dot-{{item.info.status || 'pending'}}"
-            wx:if="{{item.info.status}}"
-          ></view>
-
-          <!-- 课时数 -->
-          <text class="cell-count">{{item.info.lessonCount}}课</text>
+          <!-- 已完成（绿色点） -->
+          <view class="dot-row" wx:if="{{item.info.completedCount > 0}}">
+            <view class="dot dot-completed"></view>
+            <text class="cell-count" wx:if="{{item.info.completedCount > 1}}">{{item.info.completedCount}}</text>
+          </view>
+          <!-- 待上课（蓝色点） -->
+          <view class="dot-row" wx:if="{{item.info.pendingCount > 0}}">
+            <view class="dot dot-pending"></view>
+            <text class="cell-count" wx:if="{{item.info.pendingCount > 1}}">{{item.info.pendingCount}}</text>
+          </view>
+          <!-- 已过期（红色点） -->
+          <view class="dot-row" wx:if="{{item.info.expiredCount > 0}}">
+            <view class="dot dot-expired"></view>
+            <text class="cell-count" wx:if="{{item.info.expiredCount > 1}}">{{item.info.expiredCount}}</text>
+          </view>
+          <!-- 自动/手动消课标签 -->
+          <text class="cell-deduct-type" wx:if="{{item.info.completedCount > 0}}">
+            {{item.info.autoDeductCount > 0 ? ('自' + item.info.autoDeductCount) : ''}}{{item.info.autoDeductCount > 0 && item.info.manualDeductCount > 0 ? '/' : ''}}{{item.info.manualDeductCount > 0 ? ('手' + item.info.manualDeductCount) : ''}}
+          </text>
         </view>
 
       </view>

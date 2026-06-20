@@ -1,28 +1,22 @@
 /**
  * ECharts 占位模块
  *
- * 在微信小程序中使用 echarts-for-weixin 需要：
- * 1. 从 https://github.com/ecomfe/echarts-for-weixin 下载 ec-canvas 目录
- * 2. 放到 miniprogram/libs/echarts/ 下
- * 3. 下载 echarts.min.js 放到同一目录
+ * 当前为占位实现，未安装 echarts-for-weixin 时图表自动回退为文字数据展示。
  *
- * 部署步骤：
- *   cd miniprogram/libs/echarts/
- *   git clone https://github.com/ecomfe/echarts-for-weixin.git tmp
- *   cp tmp/ec-canvas/* .
- *   rm -rf tmp
+ * 安装真实 echarts-for-weixin 的步骤：
+ *   1. 从 https://github.com/ecomfe/echarts-for-weixin 下载 ec-canvas 目录
+ *   2. 将 ec-canvas 放到 miniprogram/libs/echarts/ 下
+ *   3. 将 echarts.min.js 放到同一目录
+ *   4. 替换本文件为: module.exports = { init: require('./ec-canvas/echarts').init }
  *
- * 当前为占位实现，图表将使用回退文字模式。
- * 部署正式版时替换此文件为真实 echarts 导入。
+ * 当前占位实现返回 null，stats-chart 组件检测到 null 后自动使用文字回退模式。
  *
  * @module echarts
  * @phase Phase 5
  */
 
-// 占位导出：当真实 echarts 不可用时，页面回退为文字展示
-const init = () => {
-  throw new Error('echarts 未安装，请参考部署文档安装 echarts-for-weixin')
-}
+// 占位：返回 null，让调用方自动启用 fallback 文字模式
+const init = () => null
 
 module.exports = {
   init

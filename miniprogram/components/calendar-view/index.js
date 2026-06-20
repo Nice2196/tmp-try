@@ -59,7 +59,7 @@ Component({
       const dayMap = {}
       if (days && days.length > 0) {
         days.forEach(d => {
-          dayMap[d.date] = d
+          dayMap[d.date] = this._computeDayInfo(d)
         })
       }
 
@@ -110,6 +110,53 @@ Component({
       }
 
       this.setData({ cells })
+    },
+
+    /**
+     * 从day数据计算组件需要的陈列信息
+     * - 整体状态（最紧急的）
+     * - 各状态下课程数
+     * - 消课类型统计
+     */
+    _computeDayInfo(dayData) {
+      const lessons = dayData.lessons || []
+      if (lessons.length === 0) return null
+
+      let completedCount = 0
+      let pendingCount = 0
+      let expiredCount = 0
+      let autoDeductCount = 0
+      let manualDeductCount = 0
+
+      for (const l of lessons) {
+        if (l.status === 'completed') {
+          completedCount++
+          if (l.deductionType === 'auto') autoDeductCount++
+          else if (l.deductionType === 'manual') manualDeductCount++
+        } else if (l.status === 'pending') {
+          pendingCount++
+        } else if (l.status === 'expired') {
+          expiredCount++
+        }
+      }
+
+      // 最紧急状态：expired > pending > completed
+      let overallStatus = 'completed'
+      if (expiredCount > 0) {
+        overallStatus = 'expired'
+      } else if (pendingCount > 0) {
+        overallStatus = 'pending'
+      }
+
+      return {
+        ...dayData,
+        overallStatus,
+        completedCount,
+        pendingCount,
+        expiredCount,
+        autoDeductCount,
+        manualDeductCount
+      }
     },
 
     /**

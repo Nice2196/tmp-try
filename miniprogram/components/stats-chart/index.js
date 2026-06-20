@@ -34,12 +34,24 @@ Component({
     attached() {
       this._echartsReady = false
 
-      // 尝试初始化 ECharts
+      // 检测 echarts 是否可用（占位模块 init 返回 null）
       try {
-        this._echarts = echarts
-        this._echartsReady = true
+        const testInit = echarts.init
+        if (testInit && typeof testInit === 'function') {
+          // 测试调用看是否抛异常或返回 null
+          const result = testInit()
+          if (result !== null) {
+            this._echartsReady = true
+          }
+        }
       } catch (_) {
         this._echartsReady = false
+      }
+
+      // 如果 echarts 不可用，直接启用 fallback
+      if (!this._echartsReady) {
+        this.setData({ fallback: true })
+        return
       }
 
       // 延迟渲染以确保 canvas 已挂载

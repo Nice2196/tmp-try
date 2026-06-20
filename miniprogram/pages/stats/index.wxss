@@ -108,6 +108,14 @@
   font-weight: 600;
   color: var(--color-text-primary);
   margin-bottom: var(--spacing-md);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.warn-title-icon {
+  margin-right: var(--spacing-xs);
+  font-size: var(--font-size-md);
 }
 
 /* 课程分布 */
@@ -193,6 +201,27 @@
 .warn-low {
   border-left: 4rpx solid var(--color-expired);
   padding-left: var(--spacing-sm);
+}
+
+/* 预警图标（Bug 12 修复） */
+.wi-icon {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-round);
+  margin-right: var(--spacing-sm);
+  flex-shrink: 0;
+  font-size: 28rpx;
+}
+
+.warn-expiry-icon {
+  background: rgba(250, 173, 20, 0.1);
+}
+
+.warn-low-icon {
+  background: rgba(255, 77, 79, 0.1);
 }
 
 .wi-left {

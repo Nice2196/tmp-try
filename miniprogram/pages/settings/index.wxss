@@ -94,6 +94,33 @@
 }
 
 /* 帮助文本 */
+/* 用户头像（Bug 11 修复） */
+.user-profile {
+  padding: var(--spacing-md) 0;
+}
+
+.user-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: var(--radius-round);
+  margin-right: var(--spacing-md);
+  flex-shrink: 0;
+}
+
+.user-avatar-placeholder {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: var(--radius-round);
+  margin-right: var(--spacing-md);
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  flex-shrink: 0;
+}
+
+/* 帮助文本 */
 .help-text {
   display: flex;
   flex-direction: column;

@@ -55,8 +55,8 @@ Page({
       time: '17:00',
       effectiveFrom: ''
     },
-    /** 星期选项 */
-    weekdayOptions: WEEKDAY_LABELS.map((label, i) => ({ value: i, label })),
+    /** 星期选项（含checked状态，避免WXML中indexOf不可靠） */
+    weekdayOptions: WEEKDAY_LABELS.map((label, i) => ({ value: i, label, checked: i === 1 })),
 
     /** 已有排课列表 */
     schedules: [],
@@ -244,7 +244,17 @@ Page({
       selectedDays.push(day)
     }
     selectedDays.sort((a, b) => a - b)
-    this.setData({ 'scheduleForm.selectedDays': selectedDays })
+
+    // 同步更新 weekdayOptions 的 checked 状态（修复 Bug 1：避免 WXML indexOf 不可靠）
+    const weekdayOptions = this.data.weekdayOptions.map(opt => ({
+      ...opt,
+      checked: selectedDays.indexOf(opt.value) > -1
+    }))
+
+    this.setData({
+      'scheduleForm.selectedDays': selectedDays,
+      weekdayOptions
+    })
   },
 
   onTimeChange(e) { this.setData({ 'scheduleForm.time': e.detail.value }) },
@@ -304,13 +314,14 @@ Page({
 
       // 重新加载数据
       this.loadCourseData()
-      // 重置排课表单
+      // 重置排课表单（同步更新weekdayOptions的checked状态）
       this.setData({
         scheduleForm: {
           selectedDays: [1],
           time: '17:00',
           effectiveFrom: ''
-        }
+        },
+        weekdayOptions: WEEKDAY_LABELS.map((label, i) => ({ value: i, label, checked: i === 1 }))
       })
     } catch (err) {
       console.error('[edit] 添加排课失败:', err)

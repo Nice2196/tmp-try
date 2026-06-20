@@ -168,7 +168,10 @@ exports.main = async (event, context) => {
 // ============================================================
 
 /**
- * 获取用户所有活跃排课
+ * 获取用户所有活跃排课（含课程存在性验证）
+ *
+ * 修复 Bug 3：已删除课程对应的孤儿排课不应出现在日历中。
+ * 先查活跃排课，再批量查关联课程的存在性，过滤掉课程已删除的排课。
  */
 async function getActiveSchedules(openid) {
   const res = await db.collection('schedules')
@@ -186,7 +189,24 @@ async function getActiveSchedules(openid) {
     })
     .get()
 
-  return res.data
+  const schedules = res.data
+
+  if (schedules.length === 0) return []
+
+  // 批量验证课程存在性：收集所有 courseId，查询 courses 集合
+  const courseIds = [...new Set(schedules.map(s => s.courseId))]
+  const courseRes = await db.collection('courses')
+    .where({
+      _id: db.command.in(courseIds),
+      _openid: openid
+    })
+    .field({ _id: true })
+    .get()
+
+  const existingCourseIds = new Set(courseRes.data.map(c => c._id))
+
+  // 过滤掉孤儿排课（课程已被删除）
+  return schedules.filter(s => existingCourseIds.has(s.courseId))
 }
 
 /**

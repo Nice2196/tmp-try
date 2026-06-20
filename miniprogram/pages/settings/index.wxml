@@ -4,9 +4,36 @@
   <!-- ==================== 用户信息 ==================== -->
   <view class="card">
     <view class="card-title">用户信息</view>
+
+    <!-- 用户头像昵称（Bug 11 修复） -->
+    <view class="setting-item user-profile">
+      <image
+        class="user-avatar"
+        src="{{avatarUrl || '/images/default-avatar.png'}}"
+        mode="aspectFill"
+        wx:if="{{avatarUrl}}"
+      />
+      <view class="user-avatar-placeholder" wx:else>
+        <text>👤</text>
+      </view>
+      <view class="si-left">
+        <text class="si-label">{{nickname || '微信用户'}}</text>
+        <text class="si-value">点击下方按钮获取昵称和头像</text>
+      </view>
+    </view>
+
+    <view class="setting-item" bindtap="onGetUserProfile">
+      <view class="si-left">
+        <text class="si-label" wx:if="{{!nickname}}">获取微信昵称</text>
+        <text class="si-label" wx:else>更新昵称</text>
+      </view>
+      <text class="si-action">{{nickname ? '同步' : '获取'}}</text>
+    </view>
+
+    <!-- OpenID（调试用） -->
     <view class="setting-item" bindtap="onCopyOpenid">
       <view class="si-left">
-        <text class="si-label">OpenID</text>
+        <text class="si-label">OpenID（调试用）</text>
         <text class="si-value">{{openid || '获取中...'}}</text>
       </view>
       <text class="si-action">复制</text>

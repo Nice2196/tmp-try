@@ -14,6 +14,10 @@ Page({
   data: {
     /** 当前 OPENID */
     openid: '',
+    /** 微信昵称 */
+    nickname: '',
+    /** 头像URL */
+    avatarUrl: '',
     /** 默认预警阈值 */
     defaultLowHoursThreshold: 3,
     /** 应用版本 */
@@ -23,6 +27,15 @@ Page({
   },
 
   onLoad() {
+    // 恢复缓存用户信息
+    const userInfo = wx.getStorageSync('userInfo')
+    if (userInfo) {
+      this.setData({
+        nickname: userInfo.nickName || '',
+        avatarUrl: userInfo.avatarUrl || ''
+      })
+    }
+
     // 获取 OPENID
     if (app.globalData.openid) {
       this.setData({ openid: app.globalData.openid })
@@ -113,6 +126,30 @@ Page({
             wx.showToast({ title: '清除失败', icon: 'none' })
           }
         }
+      }
+    })
+  },
+
+  /**
+   * 获取微信用户信息（昵称/头像，Bug 11 修复）
+   */
+  onGetUserProfile() {
+    wx.getUserProfile({
+      desc: '用于展示用户信息',
+      success: (res) => {
+        const userInfo = res.userInfo
+        this.setData({
+          nickname: userInfo.nickName || '',
+          avatarUrl: userInfo.avatarUrl || ''
+        })
+        // 缓存到本地
+        wx.setStorageSync('userInfo', userInfo)
+        app.globalData.userInfo = userInfo
+        wx.showToast({ title: '已更新', icon: 'success' })
+      },
+      fail: (err) => {
+        console.error('[settings] 获取用户信息失败:', err)
+        wx.showToast({ title: '获取失败，请重试', icon: 'none' })
       }
     })
   },

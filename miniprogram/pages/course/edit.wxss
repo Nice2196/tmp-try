@@ -163,12 +163,19 @@
   font-size: var(--font-size-sm);
   color: var(--color-text-primary);
   font-weight: 500;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .si-time {
   flex: 1;
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .si-status {

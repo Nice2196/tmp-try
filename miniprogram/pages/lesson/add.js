@@ -11,6 +11,7 @@
 
 const { callCloud } = require('../../utils/auth')
 const { todayStr } = require('../../utils/date')
+const { COURSE_TYPE_LABELS } = require('../../utils/constants')
 
 Page({
   data: {
@@ -96,7 +97,7 @@ Page({
         if (idx >= 0) {
           this.setData({
             courseIndex: idx,
-            selectedCourse: validCourses[idx],
+            selectedCourse: this._enrichCourse(validCourses[idx]),
             // 编辑模式下保留用户传入的课时数，新增模式使用默认值
             deductionHours: this.data.mode === 'edit'
               ? this.data.deductionHours
@@ -113,7 +114,7 @@ Page({
       if (validCourses.length === 1 && this.data.courseIndex < 0) {
         this.setData({
           courseIndex: 0,
-          selectedCourse: validCourses[0],
+          selectedCourse: this._enrichCourse(validCourses[0]),
           deductionHours: String(validCourses[0].deductionUnit || 1)
         })
       }
@@ -131,9 +132,19 @@ Page({
     const course = this.data.courses[idx]
     this.setData({
       courseIndex: idx,
-      selectedCourse: course,
+      selectedCourse: this._enrichCourse(course),
       deductionHours: String(course.deductionUnit || 1)
     })
+  },
+
+  /**
+   * 为课程对象附加中文字段（Bug 5 修复）
+   */
+  _enrichCourse(course) {
+    return {
+      ...course,
+      courseTypeLabel: COURSE_TYPE_LABELS[course.courseType] || course.courseType
+    }
   },
 
   /** 日期 */

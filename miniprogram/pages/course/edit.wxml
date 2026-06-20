@@ -207,7 +207,7 @@
         <view class="form-label">上课星期（可多选）</view>
         <view class="weekday-checkbox-group">
           <view
-            class="weekday-checkbox {{scheduleForm.selectedDays.indexOf(item.value) > -1 ? 'checked' : ''}}"
+            class="weekday-checkbox {{item.checked ? 'checked' : ''}}"
             wx:for="{{weekdayOptions}}"
             wx:key="value"
             data-day="{{item.value}}"

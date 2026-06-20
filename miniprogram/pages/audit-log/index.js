@@ -80,9 +80,17 @@ Page({
       })
 
       if (res.data) {
+        // 映射操作类型和触发方式为中文标签（Bug 10 修复）
+        const formattedLogs = (res.data.logs || []).map(log => ({
+          ...log,
+          actionTypeLabel: ACTION_TYPE_LABELS[log.actionType] || log.actionType,
+          triggerLabel: log.trigger === 'auto_scheduler' ? '自动' : '手动',
+          displayTime: this._formatDateTime(log.createdAt)
+        }))
+
         const newLogs = page === 1
-          ? res.data.logs || []
-          : [...this.data.logs, ...(res.data.logs || [])]
+          ? formattedLogs
+          : [...this.data.logs, ...formattedLogs]
 
         this.setData({
           logs: newLogs,
@@ -166,12 +174,16 @@ Page({
   },
 
   /**
-   * 格式化时间
+   * 格式化时间（内部使用，Bug 10 修复）
    */
-  formatDateTime(dateStr) {
+  _formatDateTime(dateStr) {
     if (!dateStr) return ''
     const d = new Date(dateStr)
     if (isNaN(d.getTime())) return ''
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
-  }
+    const m = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    const h = String(d.getHours()).padStart(2, '0')
+    const min = String(d.getMinutes()).padStart(2, '0')
+    return `${d.getFullYear()}-${m}-${day} ${h}:${min}`
+  },
 })

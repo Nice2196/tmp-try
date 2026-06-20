@@ -10,6 +10,7 @@
  */
 
 const { callCloud } = require('../../utils/auth')
+const { formatDate, formatDateTime } = require('../../utils/date')
 
 Page({
   data: {
@@ -50,8 +51,16 @@ Page({
       })
 
       if (res.data) {
+        // 格式化日期时间，转为人类友好的展示（Bug 6 修复）
+        const lessons = (res.data.lessons || []).map(l => ({
+          ...l,
+          displayDate: formatDate(l.lessonDate),
+          displayTime: l.scheduledTime || '',
+          displayCreatedAt: l.createdAt ? formatDateTime(l.createdAt) : ''
+        }))
+
         this.setData({
-          lessons: res.data.lessons || [],
+          lessons,
           courseName: res.data.courseName || '',
           loading: false
         })

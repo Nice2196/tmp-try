@@ -276,7 +276,7 @@ def get_experience_qr_by_api():
                 try:
                     data = json.loads(result)
                     log(f"获取失败: {data}", "ERROR")
-                except:
+                except Exception:
                     log(f"获取失败: {result}", "ERROR")
                 return False
     except Exception as e:

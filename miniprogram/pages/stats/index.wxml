@@ -105,7 +105,10 @@
 
     <!-- 过期预警 -->
     <view class="card" wx:if="{{expiryWarnings.length > 0}}">
-      <view class="card-title">即将过期（30天内）</view>
+      <view class="card-title">
+        <text class="warn-title-icon">⏰</text>
+        <text>即将过期（30天内）</text>
+      </view>
       <view
         class="warn-item warn-expiry"
         wx:for="{{expiryWarnings}}"
@@ -113,6 +116,9 @@
         data-course-id="{{item.courseId}}"
         bindtap="onWarningTap"
       >
+        <view class="wi-icon warn-expiry-icon">
+          <text>⚠️</text>
+        </view>
         <view class="wi-left">
           <text class="wi-name">{{item.courseName}}</text>
           <text class="wi-sub">过期日期: {{item.expiryDate}} 剩余 {{item.remainingHours || 0}} 课时</text>
@@ -123,7 +129,10 @@
 
     <!-- 低课时预警 -->
     <view class="card mt-md" wx:if="{{lowHoursWarnings.length > 0}}">
-      <view class="card-title">低课时预警</view>
+      <view class="card-title">
+        <text class="warn-title-icon">💡</text>
+        <text>低课时预警</text>
+      </view>
       <view
         class="warn-item warn-low"
         wx:for="{{lowHoursWarnings}}"
@@ -131,6 +140,9 @@
         data-course-id="{{item.courseId}}"
         bindtap="onWarningTap"
       >
+        <view class="wi-icon warn-low-icon">
+          <text>🔔</text>
+        </view>
         <view class="wi-left">
           <text class="wi-name">{{item.courseName}}</text>
           <text class="wi-sub">仅剩 {{item.remainingHours || 0}} 课时</text>
@@ -142,9 +154,9 @@
     <!-- 空状态 -->
     <empty-state
       wx:if="{{expiryWarnings.length === 0 && lowHoursWarnings.length === 0}}"
-      icon="✅"
-      text="暂无预警"
-      subText="太棒了！"
+      icon="✓"
+      text="一切正常"
+      subText="所有课程课时充足且未过期"
     />
 
   </view>

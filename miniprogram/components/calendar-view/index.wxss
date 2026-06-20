@@ -76,11 +76,18 @@
   margin-top: 2rpx;
 }
 
+.dot-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rpx;
+}
+
 .dot {
   width: 10rpx;
   height: 10rpx;
   border-radius: var(--radius-round);
-  margin-bottom: 2rpx;
+  flex-shrink: 0;
 }
 
 .dot-completed {
@@ -96,7 +103,15 @@
 }
 
 .cell-count {
-  font-size: 18rpx;
+  font-size: 16rpx;
   color: var(--color-text-secondary);
   line-height: 1;
+  margin-left: 2rpx;
+}
+
+.cell-deduct-type {
+  font-size: 14rpx;
+  color: var(--color-text-secondary);
+  line-height: 1;
+  margin-top: 2rpx;
 }
