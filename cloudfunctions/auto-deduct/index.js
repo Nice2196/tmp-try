@@ -108,25 +108,36 @@ exports.main = async (event, context) => {
 
     // ============================================================
     // 步骤2：查询匹配的活跃排课
-    // Bug 5 修复：effectiveTo 为空表示永久有效，需兼容
+    // Bug 5 修复：effectiveFrom/effectiveTo 为空时 DB 查询不匹配 null，
+    // 需从 DB 条件中移除，改为应用层 post-filter。
+    // effectiveFrom 为空 → 从第一天起生效；effectiveTo 为空 → 永久有效
     // ============================================================
     const scheduleQuery = db.collection('schedules')
       .where({
         status: 'active',
-        dayOfWeek: targetDayOfWeek,
-        effectiveFrom: db.command.lte(targetDate)
+        dayOfWeek: targetDayOfWeek
       })
       .limit(BUSINESS.MAX_AUTO_DEDUCT_PER_RUN)
 
     const scheduleRes = await scheduleQuery.get()
 
-    // 过滤 effectiveTo：为空表示永久有效，有值则需 >= targetDate
+    // 应用层过滤 effectiveFrom / effectiveTo
     const matchedSchedules = scheduleRes.data.filter(sch => {
-      if (!sch.effectiveTo) return true // 无结束日期 → 永久有效
-      const toTs = (sch.effectiveTo instanceof Date)
-        ? sch.effectiveTo.getTime()
-        : new Date(sch.effectiveTo).getTime()
-      return toTs >= targetDate.getTime()
+      // effectiveFrom: 为空表示从起始即生效，有值则需 <= targetDate
+      if (sch.effectiveFrom) {
+        const fromTs = (sch.effectiveFrom instanceof Date)
+          ? sch.effectiveFrom.getTime()
+          : new Date(sch.effectiveFrom).getTime()
+        if (fromTs > targetDate.getTime()) return false
+      }
+      // effectiveTo: 为空表示永久有效，有值则需 >= targetDate
+      if (sch.effectiveTo) {
+        const toTs = (sch.effectiveTo instanceof Date)
+          ? sch.effectiveTo.getTime()
+          : new Date(sch.effectiveTo).getTime()
+        if (toTs < targetDate.getTime()) return false
+      }
+      return true
     })
 
     stats.totalChecked = matchedSchedules.length
