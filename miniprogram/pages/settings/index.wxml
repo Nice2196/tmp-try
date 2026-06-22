@@ -41,13 +41,13 @@
       />
     </view>
 
-    <!-- OpenID（调试用） -->
-    <view class="setting-item" bindtap="onCopyOpenid">
+    <!-- 用户标识（仅展示昵称，OpenID 折叠在复制按钮中） -->
+    <view class="setting-item" bindtap="onCopyOpenid" wx:if="{{openid}}">
       <view class="si-left">
-        <text class="si-label">OpenID（调试用）</text>
-        <text class="si-value">{{openid || '获取中...'}}</text>
+        <text class="si-label">用户ID</text>
+        <text class="si-value">{{nickname || openid}}</text>
       </view>
-      <text class="si-action">复制</text>
+      <text class="si-action">复制ID</text>
     </view>
   </view>
 
@@ -104,17 +104,17 @@
   <!-- ==================== 关于 ==================== -->
   <view class="card mt-md">
     <view class="card-title">关于</view>
-    <view class="setting-item">
-      <text class="si-label">版本</text>
-      <text class="si-value">v{{version}}</text>
+    <view class="about-item">
+      <text class="about-label">版本</text>
+      <text class="about-value">v{{version}}</text>
     </view>
-    <view class="setting-item">
-      <text class="si-label">技术栈</text>
-      <text class="si-value">微信原生 + 云开发</text>
+    <view class="about-item">
+      <text class="about-label">技术栈</text>
+      <text class="about-value">微信原生 + 云开发</text>
     </view>
-    <view class="setting-item">
-      <text class="si-label">数据库</text>
-      <text class="si-value">云数据库（文档型）</text>
+    <view class="about-item">
+      <text class="about-label">数据库</text>
+      <text class="about-value">云数据库（文档型）</text>
     </view>
   </view>
 

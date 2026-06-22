@@ -79,7 +79,7 @@ Page({
     if (!trendData || trendData.length === 0) return null
 
     const dates = trendData.map(d => d.date)
-    const values = trendData.map(d => d.hours || d.count || 0)
+    const values = trendData.map(d => d.deductionHours || d.hours || d.count || 0)
 
     return {
       color: ['#52C41A'],
@@ -113,8 +113,8 @@ Page({
     if (!categoryBreakdown || categoryBreakdown.length === 0) return null
 
     const data = categoryBreakdown.map(item => ({
-      name: COURSE_TYPE_LABELS[item.courseType] || item.courseType,
-      value: item.hours || item.count || 0
+      name: COURSE_TYPE_LABELS[item.category] || COURSE_TYPE_LABELS[item.courseType] || item.category || item.courseType,
+      value: item.consumedHours || item.hours || item.count || 0
     }))
 
     return {

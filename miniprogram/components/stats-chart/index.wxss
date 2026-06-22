@@ -7,45 +7,93 @@
   overflow: hidden;
 }
 
-ec-canvas {
-  width: 100%;
-  height: 100%;
+/* 柱状图 */
+.bar-chart {
+  padding: var(--spacing-sm) 0;
 }
 
-/* 回退视图 */
-.fallback-view {
-  padding: var(--spacing-md);
-}
-
-.fallback-title {
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  color: var(--color-text-primary);
-  margin-bottom: var(--spacing-sm);
-}
-
-.fallback-list {
+.bar-list {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
+  gap: 16rpx;
 }
 
-.fallback-item {
+.bar-row {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.bar-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  width: 100rpx;
+  text-align: right;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bar-track {
+  flex: 1;
+  height: 24rpx;
+  background: var(--color-bg);
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--color-primary), var(--color-success));
+  border-radius: 12rpx;
+  transition: width 0.3s ease;
+  min-width: 4rpx;
+}
+
+.bar-value {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-primary);
+  font-weight: 600;
+  width: 60rpx;
+  text-align: left;
+  flex-shrink: 0;
+}
+
+/* 饼图（列表替代） */
+.pie-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) 0;
+}
+
+.pie-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-sm);
   padding: var(--spacing-xs) 0;
 }
 
-.fb-name {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
+.pie-dot {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 10rpx;
+  flex-shrink: 0;
 }
 
-.fb-value {
+.pie-name {
   font-size: var(--font-size-sm);
   color: var(--color-text-primary);
-  font-weight: 600;
+  flex: 1;
+}
+
+.pie-value {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: 500;
 }
 
 .empty-chart {

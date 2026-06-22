@@ -31,6 +31,7 @@
   font-weight: 700;
   color: var(--color-primary);
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .stat-label {
@@ -49,7 +50,7 @@
 .warning-banner {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   margin: 0 var(--spacing-md) var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--radius-sm);
@@ -73,7 +74,8 @@
 
 .warning-text {
   color: var(--color-text-primary);
-  line-height: 1.4;
+  line-height: 1.5;
+  word-break: break-all;
 }
 
 /* ==================== 状态筛选 Tab ==================== */

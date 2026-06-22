@@ -108,18 +108,28 @@ exports.main = async (event, context) => {
 
     // ============================================================
     // 步骤2：查询匹配的活跃排课
+    // Bug 5 修复：effectiveTo 为空表示永久有效，需兼容
     // ============================================================
     const scheduleQuery = db.collection('schedules')
       .where({
         status: 'active',
         dayOfWeek: targetDayOfWeek,
-        effectiveFrom: db.command.lte(targetDate),
-        effectiveTo: db.command.gte(targetDate)
+        effectiveFrom: db.command.lte(targetDate)
       })
       .limit(BUSINESS.MAX_AUTO_DEDUCT_PER_RUN)
 
     const scheduleRes = await scheduleQuery.get()
-    stats.totalChecked = scheduleRes.data.length
+
+    // 过滤 effectiveTo：为空表示永久有效，有值则需 >= targetDate
+    const matchedSchedules = scheduleRes.data.filter(sch => {
+      if (!sch.effectiveTo) return true // 无结束日期 → 永久有效
+      const toTs = (sch.effectiveTo instanceof Date)
+        ? sch.effectiveTo.getTime()
+        : new Date(sch.effectiveTo).getTime()
+      return toTs >= targetDate.getTime()
+    })
+
+    stats.totalChecked = matchedSchedules.length
 
     logInfo('autoDeduct', `扫描到 ${stats.totalChecked} 条匹配排课`)
 
@@ -132,7 +142,7 @@ exports.main = async (event, context) => {
     // ============================================================
     const targetDateStr = formatBeijingDate(targetDate)
 
-    for (const schedule of scheduleRes.data) {
+    for (const schedule of matchedSchedules) {
       stats.matchedSchedules++
 
       try {

@@ -123,6 +123,125 @@
   padding: var(--spacing-md);
 }
 
+/* 汇总信息 */
+.lesson-summary {
+  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  border-bottom: 1rpx solid var(--color-border);
+}
+
+.summary-text {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* 课程卡片（新设计） */
+.lesson-card {
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.lesson-card:active {
+  opacity: 0.8;
+}
+
+.lc-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-xs);
+}
+
+.lc-status-badge {
+  font-size: var(--font-size-xs);
+  padding: 2rpx 16rpx;
+  border-radius: var(--radius-round);
+}
+
+.lc-status-badge.completed {
+  color: var(--color-success);
+  background: rgba(82, 196, 26, 0.1);
+}
+
+.lc-status-badge.pending {
+  color: var(--color-primary);
+  background: rgba(24, 144, 255, 0.1);
+}
+
+.lc-status-badge.expired {
+  color: var(--color-expired);
+  background: rgba(255, 77, 79, 0.1);
+}
+
+.lc-hours {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-expired);
+}
+
+.lc-time-tag {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.lc-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+  margin-bottom: var(--spacing-xs);
+}
+
+.lc-course-name {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lc-time {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.lc-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-xs);
+  padding-top: var(--spacing-xs);
+  border-top: 1rpx solid var(--color-border);
+}
+
+.lc-btn {
+  font-size: var(--font-size-xs);
+  padding: 6rpx 20rpx;
+  border-radius: var(--radius-sm);
+}
+
+.lc-btn-edit {
+  color: var(--color-primary);
+  background: rgba(24, 144, 255, 0.1);
+}
+
+.lc-btn-edit:active {
+  opacity: 0.7;
+}
+
+.lc-btn-delete {
+  color: var(--color-expired);
+  background: rgba(255, 77, 79, 0.1);
+}
+
+.lc-btn-delete:active {
+  opacity: 0.7;
+}
+
 .lesson-item {
   display: flex;
   flex-direction: row;

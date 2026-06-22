@@ -94,9 +94,7 @@ function validateScheduleForm(formData) {
     errors.push({ field: 'time', message: '时间格式必须为 HH:mm（如 17:00）' })
   }
 
-  if (!formData.effectiveFrom) {
-    errors.push({ field: 'effectiveFrom', message: '请选择生效起始日期' })
-  }
+  // effectiveFrom 为空时默认从今天开始（不强制要求选择）
 
   return {
     valid: errors.length === 0,

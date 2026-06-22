@@ -54,10 +54,37 @@ exports.main = async (event, context) => {
 
   try {
     // 并行查询
-    const [schedules, lessonRecords] = await Promise.all([
+    const [schedules, allLessonRecords] = await Promise.all([
       getActiveSchedules(openid),
       getMonthLessons(openid, year, month)
     ])
+
+    // 过滤：只保留课程仍然存在的消课记录（Bug 2 修复）
+    const existingCourseIds = new Set(schedules.map(s => s.courseId))
+    const orphanCourseIds = new Set()
+    for (const lesson of allLessonRecords) {
+      if (!existingCourseIds.has(lesson.courseId)) {
+        orphanCourseIds.add(lesson.courseId)
+      }
+    }
+    let lessonRecords = allLessonRecords
+    if (orphanCourseIds.size > 0) {
+      // 验证这些 courseId 是否真的被删除了
+      const verifyRes = await db.collection('courses')
+        .where({
+          _id: db.command.in([...orphanCourseIds]),
+          _openid: openid
+        })
+        .field({ _id: true })
+        .get()
+      const stillExistingIds = new Set(verifyRes.data.map(c => c._id))
+      const deletedCourseIds = new Set(
+        [...orphanCourseIds].filter(id => !stillExistingIds.has(id))
+      )
+      if (deletedCourseIds.size > 0) {
+        lessonRecords = allLessonRecords.filter(l => !deletedCourseIds.has(l.courseId))
+      }
+    }
 
     // 生成：排课日期表（schedule 按 dayOfWeek → 本月的日期列表）
     const scheduleDates = buildScheduleDateMap(schedules, year, month)

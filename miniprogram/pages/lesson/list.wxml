@@ -62,5 +62,11 @@
   <text class="loading-text">加载中...</text>
 </view>
 
+<!-- 加载失败 -->
+<view class="error-container" wx:if="{{loadError && !loading}}">
+  <text class="error-text">加载失败</text>
+  <button class="btn-retry" bindtap="loadData">重试</button>
+</view>
+
 <!-- 底部安全距离 -->
 <view class="safe-bottom"></view>

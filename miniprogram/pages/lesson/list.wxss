@@ -158,6 +158,35 @@
   font-size: var(--font-size-sm);
 }
 
+/* 加载失败 */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  gap: var(--spacing-md);
+}
+
+.error-text {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.btn-retry {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  background: transparent;
+  border: 1rpx solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  padding: 8rpx 40rpx;
+  line-height: 1.5;
+}
+
+.btn-retry:active {
+  background: rgba(24, 144, 255, 0.1);
+}
+
 .safe-bottom {
   height: 40rpx;
 }

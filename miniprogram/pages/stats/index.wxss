@@ -33,14 +33,19 @@
 }
 
 .tab-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: var(--color-expired);
   color: #fff;
   font-size: 18rpx;
+  min-width: 32rpx;
+  height: 32rpx;
   padding: 0 8rpx;
-  border-radius: var(--radius-round);
+  border-radius: 16rpx;
   margin-left: 4rpx;
-  vertical-align: top;
+  vertical-align: super;
+  line-height: 1;
 }
 
 .tab-content {

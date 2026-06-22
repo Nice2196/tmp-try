@@ -22,6 +22,8 @@ Page({
     lessons: [],
     /** 加载中 */
     loading: true,
+    /** 加载失败 */
+    loadError: false,
     /** 操作中 */
     operating: false
   },
@@ -41,7 +43,7 @@ Page({
    * 加载消课记录
    */
   async loadData() {
-    this.setData({ loading: true })
+    this.setData({ loading: true, loadError: false })
     try {
       const res = await callCloud('lesson-manager', {
         action: 'list',
@@ -50,25 +52,23 @@ Page({
         }
       })
 
-      if (res.data) {
-        // 格式化日期时间，转为人类友好的展示（Bug 6 修复）
-        const lessons = (res.data.lessons || []).map(l => ({
-          ...l,
-          displayDate: formatDate(l.lessonDate),
-          displayTime: l.scheduledTime || '',
-          displayCreatedAt: l.createdAt ? formatDateTime(l.createdAt) : ''
-        }))
+      const lessons = (res.data && res.data.lessons || []).map(l => ({
+        ...l,
+        displayDate: formatDate(l.lessonDate),
+        displayTime: l.scheduledTime || '',
+        displayCreatedAt: l.createdAt ? formatDateTime(l.createdAt) : ''
+      }))
 
-        this.setData({
-          lessons,
-          courseName: res.data.courseName || '',
-          loading: false
-        })
-      }
+      this.setData({
+        lessons,
+        courseName: (res.data && res.data.courseName) || '',
+        loading: false,
+        loadError: false
+      })
     } catch (err) {
       console.error('[list] 加载失败:', err)
-      this.setData({ loading: false })
-      wx.showToast({ title: '加载失败', icon: 'none' })
+      this.setData({ loading: false, loadError: true })
+      wx.showToast({ title: err.message || '加载失败', icon: 'none' })
     }
   },
 

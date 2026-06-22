@@ -46,24 +46,35 @@
         <text class="popup-close" bindtap="onCloseDetail">✕</text>
       </view>
       <view class="popup-body">
+        <!-- 汇总信息 -->
+        <view class="lesson-summary" wx:if="{{selectedLessons.length > 0}}">
+          <text class="summary-text">共 {{selectedLessons.length}} 条记录</text>
+        </view>
+
         <block wx:if="{{selectedLessons.length > 0}}">
+          <!-- 已完成的消课记录 -->
           <view
-            class="lesson-item"
+            class="lesson-card"
             wx:for="{{selectedLessons}}"
             wx:key="lessonRecordId"
             wx:if="{{item.lessonRecordId}}"
             data-course-id="{{item.courseId}}"
             bindtap="onLessonTap"
           >
-            <view class="lesson-status-dot {{item.status}}"></view>
-            <view class="lesson-info">
-              <text class="lesson-name">{{item.courseName}}</text>
-              <text class="lesson-time">{{item.time}} | {{item.deductionType === 'auto' ? '自动消课' : '手动消课'}} ({{item.deductionHours}}课时)</text>
+            <view class="lc-header">
+              <view class="lc-status-badge {{item.status}}">
+                {{item.deductionType === 'auto' ? '自动消课' : '手动消课'}}
+              </view>
+              <text class="lc-hours">-{{item.deductionHours}}课时</text>
             </view>
-            <!-- 手动消课记录：编辑/删除按钮 -->
-            <view class="lesson-btns" wx:if="{{item.deductionType === 'manual'}}">
+            <view class="lc-body">
+              <text class="lc-course-name">{{item.courseName}}</text>
+              <text class="lc-time">{{item.time}}</text>
+            </view>
+            <!-- 手动消课：操作按钮 -->
+            <view class="lc-actions" wx:if="{{item.deductionType === 'manual'}}">
               <text
-                class="lesson-btn lesson-btn-edit"
+                class="lc-btn lc-btn-edit"
                 data-record-id="{{item.lessonRecordId}}"
                 data-course-id="{{item.courseId}}"
                 data-hours="{{item.deductionHours}}"
@@ -71,25 +82,30 @@
                 catchtap="onEditLesson"
               >编辑</text>
               <text
-                class="lesson-btn lesson-btn-delete"
+                class="lc-btn lc-btn-delete"
                 data-record-id="{{item.lessonRecordId}}"
                 catchtap="onDeleteLesson"
               >删除</text>
             </view>
-            <view class="lesson-arrow" wx:else>›</view>
           </view>
+
+          <!-- 待上课/已错过 -->
           <view
-            class="lesson-item"
+            class="lesson-card"
             wx:for="{{selectedLessons}}"
             wx:key="courseId"
             wx:if="{{!item.lessonRecordId}}"
           >
-            <view class="lesson-status-dot {{item.status}}"></view>
-            <view class="lesson-info">
-              <text class="lesson-name">{{item.courseName}}</text>
-              <text class="lesson-time">{{item.time}} | {{item.status === 'pending' ? '待上课' : '已错过'}}</text>
+            <view class="lc-header">
+              <view class="lc-status-badge {{item.status}}">
+                {{item.status === 'pending' ? '待上课' : '已错过'}}
+              </view>
+              <text class="lc-time-tag">{{item.time}}</text>
             </view>
-            <view class="lesson-action" wx:if="{{item.status === 'pending'}}">
+            <view class="lc-body">
+              <text class="lc-course-name">{{item.courseName}}</text>
+            </view>
+            <view class="lc-actions" wx:if="{{item.status === 'pending'}}">
               <button
                 class="btn-deduct-small"
                 data-course-id="{{item.courseId}}"

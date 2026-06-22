@@ -29,8 +29,9 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: var(--spacing-sm) 0;
+  padding: var(--spacing-md) 0;
   border-bottom: 1rpx solid var(--color-border);
+  gap: var(--spacing-md);
 }
 
 .setting-item:last-child {
@@ -53,6 +54,8 @@
 .si-label {
   font-size: var(--font-size-md);
   color: var(--color-text-primary);
+  flex-shrink: 0;
+  margin-right: var(--spacing-md);
 }
 
 .si-value {
@@ -62,6 +65,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0;
 }
 
 .si-action {
@@ -156,6 +160,47 @@
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   line-height: 1.6;
+}
+
+/* 关于栏 - 独立样式，解决间距问题 */
+.about-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--spacing-md) 0;
+  border-bottom: 1rpx solid var(--color-border);
+}
+
+.about-item:last-child {
+  border-bottom: none;
+}
+
+.about-label {
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  width: 160rpx;
+  flex-shrink: 0;
+}
+
+.about-value {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  flex: 1;
+}
+
+/* 用户资料行 - 防止溢出 */
+.user-profile .si-left {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.user-profile .si-label {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 400rpx;
 }
 
 .safe-bottom {
