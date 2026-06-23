@@ -114,7 +114,7 @@ async function validateCourseOwnership(courseId, openid) {
  *   4. time 格式 "HH:mm"（北京时间）
  */
 async function createSchedule(data, openid) {
-  const {
+  let {
     courseId,
     dayOfWeek,
     time,
@@ -133,7 +133,15 @@ async function createSchedule(data, openid) {
     return { success: false, error: '上课时间格式必须为 HH:mm（如 17:00）' }
   }
   if (!effectiveFrom) {
-    return { success: false, error: '缺少生效起始日期' }
+    // 默认从今天开始
+    const today = new Date()
+    const beijingToday = new Date(today.getTime() + 8 * 3600 * 1000)
+    effectiveFrom = new Date(Date.UTC(
+      beijingToday.getUTCFullYear(),
+      beijingToday.getUTCMonth(),
+      beijingToday.getUTCDate(),
+      0, 0, 0
+    ))
   }
 
   // --- 校验课程归属 ---

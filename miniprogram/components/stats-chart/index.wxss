@@ -28,7 +28,7 @@
 .bar-label {
   font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
-  width: 100rpx;
+  width: 130rpx;
   text-align: right;
   flex-shrink: 0;
   overflow: hidden;

@@ -126,8 +126,8 @@ function getDaysInMonth(year, month) {
  * 内部使用，统一时区处理
  */
 function toBeijing(date) {
-  const d = new Date(date.getTime() + 8 * 3600 * 1000)
-  return d
+  const d = date instanceof Date ? date : new Date(date)
+  return new Date(d.getTime() + 8 * 3600 * 1000)
 }
 
 module.exports = {

@@ -8,6 +8,7 @@
  */
 
 const { COURSE_STATUS_LABELS, SUBJECT_LABELS, COURSE_TYPE_LABELS } = require('../../utils/constants')
+const { formatDate } = require('../../utils/date')
 
 Component({
   properties: {
@@ -38,7 +39,8 @@ Component({
           isExpiring = diffDays <= 30 && diffDays >= 0
         }
 
-        this.setData({ progressPercent, statusLabel, subjectLabel, courseTypeLabel, isExpiring })
+        const formattedExpiryDate = course.expiryDate ? formatDate(new Date(course.expiryDate)) : ''
+        this.setData({ progressPercent, statusLabel, subjectLabel, courseTypeLabel, isExpiring, formattedExpiryDate })
       }
     }
   },
@@ -48,7 +50,8 @@ Component({
     statusLabel: '',
     subjectLabel: '',
     courseTypeLabel: '',
-    isExpiring: false
+    isExpiring: false,
+    formattedExpiryDate: ''
   },
 
   methods: {

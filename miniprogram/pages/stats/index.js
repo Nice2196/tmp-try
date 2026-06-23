@@ -78,7 +78,11 @@ Page({
   buildLineOption(trendData) {
     if (!trendData || trendData.length === 0) return null
 
-    const dates = trendData.map(d => d.date)
+    const dates = trendData.map(d => {
+      const dateStr = d.date || ''
+      // "2026-06-22" → "06-22"（年份在"近30天"视图中冗余）
+      return dateStr.length >= 10 ? dateStr.substring(5) : dateStr
+    })
     const values = trendData.map(d => d.deductionHours || d.hours || d.count || 0)
 
     return {

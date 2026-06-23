@@ -59,7 +59,7 @@ exports.main = async (event, context) => {
       getMonthLessons(openid, year, month)
     ])
 
-    // 过滤：只保留课程仍然存在的消课记录（Bug 2 修复）
+    // 过滤：只保留课程仍有效（active/paused）的消课记录
     const existingCourseIds = new Set(schedules.map(s => s.courseId))
     const orphanCourseIds = new Set()
     for (const lesson of allLessonRecords) {
@@ -69,20 +69,21 @@ exports.main = async (event, context) => {
     }
     let lessonRecords = allLessonRecords
     if (orphanCourseIds.size > 0) {
-      // 验证这些 courseId 是否真的被删除了
+      // 验证这些 courseId 是否仍然有效（未删除 且 状态为 active/paused）
       const verifyRes = await db.collection('courses')
         .where({
           _id: db.command.in([...orphanCourseIds]),
-          _openid: openid
+          _openid: openid,
+          status: db.command.in(['active', 'paused'])
         })
         .field({ _id: true })
         .get()
-      const stillExistingIds = new Set(verifyRes.data.map(c => c._id))
-      const deletedCourseIds = new Set(
-        [...orphanCourseIds].filter(id => !stillExistingIds.has(id))
+      const validCourseIds = new Set(verifyRes.data.map(c => c._id))
+      const invalidCourseIds = new Set(
+        [...orphanCourseIds].filter(id => !validCourseIds.has(id))
       )
-      if (deletedCourseIds.size > 0) {
-        lessonRecords = allLessonRecords.filter(l => !deletedCourseIds.has(l.courseId))
+      if (invalidCourseIds.size > 0) {
+        lessonRecords = allLessonRecords.filter(l => !invalidCourseIds.has(l.courseId))
       }
     }
 
@@ -195,10 +196,10 @@ exports.main = async (event, context) => {
 // ============================================================
 
 /**
- * 获取用户所有活跃排课（含课程存在性验证）
+ * 获取用户所有活跃排课（含课程有效性验证）
  *
- * 修复 Bug 3：已删除课程对应的孤儿排课不应出现在日历中。
- * 先查活跃排课，再批量查关联课程的存在性，过滤掉课程已删除的排课。
+ * 先查 status='active' 的排课，再批量验证关联课程是否存在且状态为
+ * active/paused。过滤掉课程已删除、已完成(completed)、已过期(expired)的排课。
  */
 async function getActiveSchedules(openid) {
   const res = await db.collection('schedules')
@@ -220,20 +221,22 @@ async function getActiveSchedules(openid) {
 
   if (schedules.length === 0) return []
 
-  // 批量验证课程存在性：收集所有 courseId，查询 courses 集合
+  // 批量验证课程有效性：只保留 status 为 active 或 paused 的课程
+  // 已完成(completed)或已过期(expired)的课程，其排课不应出现在日历中
   const courseIds = [...new Set(schedules.map(s => s.courseId))]
   const courseRes = await db.collection('courses')
     .where({
       _id: db.command.in(courseIds),
-      _openid: openid
+      _openid: openid,
+      status: db.command.in(['active', 'paused'])
     })
     .field({ _id: true })
     .get()
 
-  const existingCourseIds = new Set(courseRes.data.map(c => c._id))
+  const activeCourseIds = new Set(courseRes.data.map(c => c._id))
 
-  // 过滤掉孤儿排课（课程已被删除）
-  return schedules.filter(s => existingCourseIds.has(s.courseId))
+  // 过滤掉非活跃课程的排课（课程已删除/已完成/已过期）
+  return schedules.filter(s => activeCourseIds.has(s.courseId))
 }
 
 /**

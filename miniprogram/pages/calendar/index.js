@@ -30,7 +30,9 @@ Page({
     /** 是否显示日期详情弹窗 */
     showDetailPopup: false,
     /** 加载状态 */
-    loading: true
+    loading: true,
+    /** 加载失败状态 */
+    loadError: false
   },
 
   onLoad() {
@@ -62,21 +64,26 @@ Page({
    */
   async loadMonthData() {
     const { year, month } = this.data
-    this.setData({ loading: true })
+    this.setData({ loading: true, loadError: false })
 
     try {
       const res = await callCloud('calendar-query', { year, month })
 
-      if (res.data) {
+      if (res && res.data && res.data.days) {
         this.setData({
           days: res.data.days,
-          loading: false
+          loading: false,
+          loadError: false
         })
         this._hasLoaded = true
+      } else {
+        this.setData({ loading: false, loadError: true })
+        wx.showToast({ title: res.error || '加载失败', icon: 'none' })
       }
     } catch (err) {
-      this.setData({ loading: false })
+      this.setData({ loading: false, loadError: true })
       console.error('[calendar] 加载日历数据失败:', err)
+      wx.showToast({ title: err.message || '网络错误', icon: 'none' })
     }
   },
 
@@ -115,12 +122,22 @@ Page({
 
   /**
    * 点击日期 → 展示当日课程明细
+   *
+   * 展开弹窗前，用排课数据补全消课记录中缺失的 courseName，
+   * 确保用户一眼看到消了什么课。
    */
   onDayTap(e) {
     const { date, lessons } = e.detail
+    const courseMap = this._buildCourseMap()
+    const enriched = (lessons || []).map(l => {
+      if (!l.courseName && l.courseId && courseMap[l.courseId]) {
+        return { ...l, courseName: courseMap[l.courseId] }
+      }
+      return l
+    })
     this.setData({
       selectedDate: date,
-      selectedLessons: lessons || [],
+      selectedLessons: enriched,
       showDetailPopup: true
     })
   },
@@ -212,5 +229,26 @@ Page({
       console.error('[calendar] 删除消课记录失败:', err)
       wx.showToast({ title: err.message || '删除失败', icon: 'none' })
     }
+  },
+
+  /**
+   * 从当月日历数据中构建 courseId → courseName 映射
+   *
+   * 排课记录（status=completed/pending/expired）携带 courseName，
+   * 而独立的消课记录可能缺少该字段。此映射用于弹窗展示时补全名称。
+   *
+   * @returns {Object} { courseId: courseName, ... }
+   */
+  _buildCourseMap() {
+    const map = {}
+    for (const day of this.data.days) {
+      if (!day.lessons) continue
+      for (const lesson of day.lessons) {
+        if (lesson.courseId && lesson.courseName) {
+          map[lesson.courseId] = lesson.courseName
+        }
+      }
+    }
+    return map
   }
 })

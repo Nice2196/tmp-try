@@ -46,7 +46,7 @@
   <!-- 过期提醒 -->
   <view class="card-expiry" wx:if="{{course.status === 'active' && isExpiring}}">
     <view class="expiry-dot"></view>
-    <text class="expiry-text">将于 {{course.expiryDate}} 到期</text>
+    <text class="expiry-text">将于 {{formattedExpiryDate}} 到期</text>
   </view>
 
 </view>
