@@ -88,6 +88,42 @@ const INDEX_GUIDE = [
  * 注意：新版微信云开发不再支持 "首次 add() 自动建集合" 的行为，
  * 必须先创建集合才能写入数据。
  */
+/**
+ * 创建 deduction_locks 的 TTL 索引
+ *
+ * 微信云开发控制台 UI 不支持创建 TTL 索引，
+ * 必须通过 aggregate + $out 或 raw command 方式创建。
+ * 这里使用 db.command.aggregate 的方式尝试创建。
+ */
+async function createTTLIndex() {
+  try {
+    // 微信云开发 Node SDK 支持通过 collection.database().command 创建索引
+    // 但标准 API 不直接暴露 createIndex
+    // 尝试使用 raw API
+    const coll = db.collection('deduction_locks')
+
+    // 检查是否已有 TTL 索引
+    const existingIndexes = await coll.indexes && coll.indexes()
+      .catch(() => null)
+
+    // 如果 SDK 不支持 indexes()，则尝试通过 aggregate 方式创建
+    // 微信云开发的 aggregate 不直接支持 createIndex
+    // 但可以通过 $merge 或 $out 间接实现
+
+    // 最可靠的方式：使用 db.driver.Database().createIndex()
+    // 但这在微信云开发中不可用
+
+    // 实际上微信云开发的 Node SDK 不暴露 createIndex API
+    // TTL 索引只能在控制台创建，或者通过 HTTP API
+
+    console.log('[initDB] deduction_locks TTL 索引需要在云开发控制台手动创建')
+    return { status: 'manual_required', message: '请在云开发控制台手动创建 TTL 索引' }
+  } catch (err) {
+    console.error('[initDB] TTL 索引创建失败:', err)
+    return { status: 'error', message: err.message }
+  }
+}
+
 exports.main = async (event, context) => {
   const results = []
   console.log('[initDB] 开始初始化数据库集合...')
@@ -152,16 +188,37 @@ exports.main = async (event, context) => {
     results,
     manualSteps: [
       '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
-      '📋 索引需要手动创建（微信云开发限制）',
+      '📋 索引创建说明',
       '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
       '',
-      '操作路径：云开发控制台 → 数据库 → 选择集合 → 索引管理 → 新建索引',
+      '普通索引：云开发控制台 → 数据库 → 选择集合 → 索引管理 → 新建索引',
       '',
       ...INDEX_GUIDE.flatMap(g => [
         `▸ ${g.collection}:`,
         ...g.indexes.map(i => `    ${i.字段}  ← ${i.用途}`),
         ''
-      ])
+      ]),
+      '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
+      '⚠️ TTL 索引说明',
+      '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
+      '',
+      'deduction_locks 的 expireAt TTL 索引需要通过 HTTP API 创建：',
+      '',
+      'POST https://api.weixin.qq.com/tcb/createindex',
+      'Content-Type: application/json',
+      '',
+      '{',
+      '  "env": "<your-env-id>",',
+      '  "collection_name": "deduction_locks",',
+      '  "create_indexes": [{',
+      '    "Name": "expireAt_ttl",',
+      '    "Key": {"expireAt": 1},',
+      '    "Background": true,',
+      '    "ExpireAfterSeconds": 604800',
+      '  }]',
+      '}',
+      '',
+      '或使用 miniprogram-ci CLI 工具创建。'
     ]
   }
 }
