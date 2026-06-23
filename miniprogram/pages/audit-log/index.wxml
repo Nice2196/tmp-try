@@ -61,14 +61,23 @@
       data-course-id="{{item.courseId}}"
       bindtap="onLogTap"
     >
-      <view class="log-header">
-        <view class="log-action-tag">{{item.actionTypeLabel || item.actionType}}</view>
-        <view class="log-course">{{item.courseName || '-'}}</view>
-        <view class="log-trigger-tag {{item.trigger}}">
-          {{item.triggerLabel || (item.trigger === 'auto_scheduler' ? '自动' : '手动')}}
+      <!-- 第一行：标签 + 时间 -->
+      <view class="log-row-top">
+        <view class="log-tags">
+          <view class="log-action-tag">{{item.actionTypeLabel}}</view>
+          <view class="log-trigger-tag {{item.trigger}}">{{item.triggerLabel}}</view>
         </view>
+        <view class="log-time">{{item.displayTime}}</view>
       </view>
-      <view class="log-time">{{item.displayTime || item.createdAt}}</view>
+
+      <!-- 第二行：课程名 -->
+      <view class="log-course" wx:if="{{item.courseName}}">{{item.courseName}}</view>
+
+      <!-- 第三行：操作详情 -->
+      <view class="log-detail" wx:if="{{item.detailText}}">{{item.detailText}}</view>
+
+      <!-- 第四行：操作结果 -->
+      <view class="log-result {{item.resultClass}}" wx:if="{{item.resultText}}">{{item.resultText}}</view>
     </view>
   </view>
 

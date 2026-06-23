@@ -116,49 +116,42 @@
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
-  border-left: 4rpx solid var(--color-border);
+  border-left: 4rpx solid var(--color-primary-soft);
 }
 
 .log-item:active {
   opacity: 0.8;
 }
 
-.log-header {
+/* 第一行：标签 + 时间 */
+.log-row-top {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: var(--spacing-xs);
+}
+
+.log-tags {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .log-action-tag {
   font-size: 22rpx;
-  padding: 2rpx 8rpx;
+  padding: 4rpx 12rpx;
   background: var(--color-primary-light);
-  border-radius: 4rpx;
+  border-radius: 6rpx;
   color: var(--color-primary);
-  margin-right: var(--spacing-xs);
-  max-width: 160rpx;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  flex-shrink: 0;
-  font-weight: 500;
-}
-
-.log-course {
-  flex: 1;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-primary);
-  font-weight: 500;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-weight: 600;
 }
 
 .log-trigger-tag {
-  font-size: 22rpx;
-  padding: 2rpx 8rpx;
-  border-radius: 4rpx;
+  font-size: 20rpx;
+  padding: 2rpx 10rpx;
+  border-radius: 6rpx;
   margin-left: var(--spacing-xs);
   font-weight: 500;
 }
@@ -176,6 +169,51 @@
 .log-time {
   font-size: var(--font-size-xs);
   color: var(--color-text-helper);
+  flex-shrink: 0;
+  margin-left: var(--spacing-sm);
+}
+
+/* 第二行：课程名 */
+.log-course {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  font-weight: 500;
+  margin-bottom: 4rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 第三行：操作详情 */
+.log-detail {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 4rpx;
+}
+
+/* 第四行：操作结果 */
+.log-result {
+  font-size: 20rpx;
+  padding: 2rpx 10rpx;
+  border-radius: 6rpx;
+  display: inline-block;
+  font-weight: 500;
+}
+
+.log-result.result-default {
+  color: var(--color-text-secondary);
+  background: var(--color-bg);
+}
+
+.log-result.result-success {
+  color: var(--color-success);
+  background: var(--color-success-light);
+}
+
+.log-result.result-danger {
+  color: var(--color-expired);
+  background: var(--color-expired-light);
 }
 
 /* 加载更多 */
