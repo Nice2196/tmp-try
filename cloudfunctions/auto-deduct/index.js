@@ -208,7 +208,16 @@ async function processSchedule(schedule, targetDate, targetDateStr, stats) {
   // ============================================================
   // 步骤3a：幂等锁检查（数据库级别原子操作）
   // ============================================================
-  const locked = await tryAcquireLockNonTx(db, courseId, scheduleId, targetDateStr)
+  let locked
+  try {
+    locked = await tryAcquireLockNonTx(db, courseId, scheduleId, targetDateStr)
+  } catch (lockErr) {
+    if (lockErr.message && lockErr.message.includes('E11000')) {
+      locked = false
+    } else {
+      throw lockErr
+    }
+  }
 
   if (!locked) {
     // lockKey 已存在 → 已处理过，跳过

@@ -218,7 +218,7 @@ async function getExpiryWarnings(openid) {
     courseId: course._id,
     courseName: course.name,
     remainingHours: course.remainingHours,
-    expiryDate: course.expiryDate,
+    expiryDate: course.expiryDate ? formatBeijingDate(course.expiryDate) : '',
     daysUntilExpiry: daysBetween(now, course.expiryDate),
     status: course.status
   }))

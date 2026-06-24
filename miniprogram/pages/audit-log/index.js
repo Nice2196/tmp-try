@@ -233,11 +233,6 @@ Page({
     if (diffDays === 0) return `今天 ${timeStr}`
     if (diffDays === 1) return `昨天 ${timeStr}`
     if (diffDays === 2) return `前天 ${timeStr}`
-    // 7 天内显示星期
-    if (diffDays < 7) {
-      const weekday = WEEKDAY_LABELS[d.getDay()] || ''
-      return `${weekday} ${timeStr}`
-    }
     // 同年省略年份
     const m = String(d.getMonth() + 1).padStart(2, '0')
     const day = String(d.getDate()).padStart(2, '0')

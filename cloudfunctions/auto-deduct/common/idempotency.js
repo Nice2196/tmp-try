@@ -67,8 +67,12 @@ async function tryAcquireLock(transaction, courseId, scheduleId, dateStr) {
     // 插入成功 → 锁获取成功
     return true
   } catch (err) {
-    // errCode -1 表示唯一索引冲突 = 已加过锁
-    if (err.errCode === -1) {
+    // errCode -1 或 E11000 表示唯一索引冲突 = 已加过锁
+    if (
+      err.errCode === -1 ||
+      err.code === 11000 ||
+      (err.message && err.message.includes('E11000'))
+    ) {
       return false
     }
     // 其他错误向上抛出
@@ -103,7 +107,11 @@ async function tryAcquireLockNonTx(db, courseId, scheduleId, dateStr) {
     })
     return true
   } catch (err) {
-    if (err.errCode === -1) {
+    if (
+      err.errCode === -1 ||
+      err.code === 11000 ||
+      (err.message && err.message.includes('E11000'))
+    ) {
       return false
     }
     throw err

@@ -127,7 +127,7 @@ exports.main = async (event, context) => {
             deductionType: completedLesson.deductionType,
             deductionHours: completedLesson.deductionHours
           })
-        } else if (dateStr > todayStr) {
+        } else if (dateStr >= todayStr) {
           // 未来日期 → pending
           dateLessons.push({
             courseId: sch.courseId,

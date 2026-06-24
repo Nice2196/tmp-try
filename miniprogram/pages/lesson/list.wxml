@@ -15,7 +15,7 @@
       wx:key="_id"
     >
       <view class="lesson-header">
-        <view class="lesson-date">{{item.displayDate || item.lessonDate}}</view>
+        <view class="lesson-date">{{item.displayDate}}</view>
         <view class="lesson-tag {{item.deductionType === 'auto' ? 'auto' : 'manual'}}">
           {{item.deductionType === 'auto' ? '自动' : '手动'}}
         </view>
