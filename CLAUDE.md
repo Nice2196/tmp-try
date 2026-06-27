@@ -25,35 +25,6 @@
 
 始终使用 Python 3.11：`/usr/local/bin/python3.11`
 
-## Web 研究规则（必需遵循）
-
-当需要抓取网页内容或进行网络调研时，**优先使用本地网页解析工具**，避免使用内置 WebFetch（存在域名安全验证问题）。
-
-### 工具链
-
-- `readability-lxml` (Python) — Mozilla 官方阅读算法，自动清洗广告/导航/冗余元素
-- `html2text` (Python) — HTML → Markdown 转换
-
-### 使用方式
-
-```bash
-# 抓取单个 URL → Markdown
-/usr/local/bin/python3.11 ~/.claude/skills/local-web-reader/scripts/fetch.py "URL"
-```
-
-### 工作流程
-
-1. **先用 WebSearch 搜索**（Claude 内置，走 Anthropic 服务器）
-2. **再用 readability + turndown 抓取**（本地处理，免费无限制）
-3. **分析内容并回复用户**
-
-### 技术方案
-
-- 全程本地处理，无需外部 API
-- 免费无限制，无需 API Key
-- 支持系统代理访问海外站点
-- Mozilla Readability 算法，提取正文质量高
-
 ## Skills 研发全流程（必需遵循）
 
 本项目配置了 6 阶段研发流水线 Skills，编写/修改代码时**严格按以下流程**：
