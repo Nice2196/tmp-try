@@ -106,6 +106,19 @@ exports.main = async (event, context) => {
 
   // 确定目标日期
   const targetDate = getTargetDate(event)
+  const targetDateStr = formatBeijingDate(targetDate)
+
+  // ============================================================
+  // 孤儿锁清理：修复历史失败事务留下的孤儿锁
+  //
+  // 问题：幂等锁在事务外创建，如果后续事务失败，锁成为"孤儿"——
+  //       存在但无对应消课记录，永久阻塞该排课的重试。
+  //
+  // 方案：查询当日所有锁，检查是否有关联的消课记录。
+  //       对于无记录且排课时间已过的锁，删除以允许重试。
+  // ============================================================
+  await cleanupOrphanLocks(targetDateStr, targetDate)
+  const targetDate = getTargetDate(event)
 
   logInfo('autoDeduct', `自动消课开始`, {
     targetDate: formatBeijingDate(targetDate),
@@ -180,8 +193,6 @@ exports.main = async (event, context) => {
     // ============================================================
     // 步骤3：逐条处理
     // ============================================================
-    const targetDateStr = formatBeijingDate(targetDate)
-
     for (const schedule of matchedSchedules) {
       stats.matchedSchedules++
 
@@ -216,6 +227,95 @@ exports.main = async (event, context) => {
   } catch (err) {
     logError('autoDeduct', '自动消课主流程异常', err)
     return { success: false, error: err.message, stats }
+  }
+}
+
+// ============================================================
+// 孤儿锁清理
+// ============================================================
+
+/**
+ * 清理孤儿锁：有锁但无对应消课记录的锁
+ *
+ * 幂等锁在事务外创建。如果后续事务失败（网络超时等），
+ * 锁成为"孤儿"——存在但无对应消课记录，永久阻塞该排课的重试。
+ *
+ * 本函数查询当日所有锁，检查是否有关联的消课记录。
+ * 对于无记录且排课时间已过的锁，删除以允许重试。
+ *
+ * @param {string} targetDateStr - 目标日期 "YYYY-MM-DD"
+ * @param {Date} targetDate - 目标日期 Date 对象
+ */
+async function cleanupOrphanLocks(targetDateStr, targetDate) {
+  try {
+    // 查询当日所有锁（包括已删除标记的）
+    const locksRes = await db.collection('deduction_locks')
+      .where({ lockKey: db.RegExp({ regexp: `_${targetDateStr}$` }) })
+      .get()
+
+    if (locksRes.data.length === 0) return
+
+    // 查询当日所有消课记录
+    const dayStart = targetDate
+    const dayEnd = new Date(targetDate.getTime() + 24 * 3600 * 1000)
+    const lessonsRes = await db.collection('lesson_records')
+      .where({
+        lessonDate: db.command.gte(dayStart).and(db.command.lt(dayEnd))
+      })
+      .get()
+
+    // 建立消课记录索引: "courseId_scheduleId" → true
+    const lessonKeys = new Set()
+    for (const l of lessonsRes.data) {
+      lessonKeys.add(`${l.courseId}_${l.scheduleId}`)
+    }
+
+    // 检查每个锁
+    for (const lock of locksRes.data) {
+      const lockKey = lock.lockKey
+      if (!lockKey || lockKey.startsWith('_deleted')) continue
+
+      // 解析 lockKey: courseId_scheduleId_YYYY-MM-DD
+      const dateSuffix = `_${targetDateStr}`
+      if (!lockKey.endsWith(dateSuffix)) continue
+
+      const prefix = lockKey.slice(0, -dateSuffix.length)
+      // prefix = "courseId_scheduleId"
+      // 但 courseId 和 scheduleId 都是 32 位十六进制，需要正确分割
+      // courseId 是 32 位，scheduleId 是 32 位，中间用 _ 分隔
+      // 但 scheduleId 也可能包含 _，所以从左取 32 位作为 courseId
+      const courseId = prefix.slice(0, 32)
+      const scheduleId = prefix.slice(33) // 跳过中间的 _
+
+      if (lessonKeys.has(`${courseId}_${scheduleId}`)) continue
+
+      // 孤儿锁：无对应消课记录
+      // 查询排课时间，确认是否已过
+      const now = new Date()
+      const beijingHour = (now.getUTCHours() + 8) % 24
+      const beijingMinute = now.getUTCMinutes()
+
+      // 查排课获取时间
+      const schRes = await db.collection('schedules').doc(scheduleId).get().catch(() => null)
+      if (schRes && schRes.data && schRes.data.time) {
+        const [schedH, schedM] = schRes.data.time.split(':').map(Number)
+        // 排课时间未到 → 不是孤儿，是正常的"等待中"锁
+        if (beijingHour < schedH || (beijingHour === schedH && beijingMinute < schedM)) {
+          continue
+        }
+      }
+
+      // 排课时间已过但无记录 → 孤儿锁，删除
+      logWarn('autoDeduct', `清理孤儿锁: ${lockKey}`)
+      await db.collection('deduction_locks').doc(lock._id).update({
+        data: { lockKey: `_deleted_${lockKey}`, _orphanCleanedAt: new Date() }
+      }).catch(err => {
+        logWarn('autoDeduct', `清理孤儿锁失败: ${err.message}`)
+      })
+    }
+  } catch (err) {
+    // 清理失败不应阻塞主流程
+    logWarn('autoDeduct', `孤儿锁清理异常: ${err.message}`)
   }
 }
 

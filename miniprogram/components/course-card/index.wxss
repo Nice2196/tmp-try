@@ -135,40 +135,14 @@
 
 .ring-fill {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100rpx;
-  height: 100rpx;
+  top: 8rpx;
+  left: 8rpx;
+  width: calc(100rpx - 16rpx);
+  height: calc(100rpx - 16rpx);
   border-radius: 50%;
-  border: 8rpx solid transparent;
-  border-top-color: var(--color-success);
-  border-right-color: var(--color-success);
   box-sizing: border-box;
-  transform: rotate(calc(var(--progress) * 3.6deg - 90deg));
-  transition: transform 0.6s var(--ease-out);
-}
-
-/* 0-75%：top+right+bottom 三边绿色，旋转暴露 */
-.ring-fill.ring-mid {
-  border-bottom-color: var(--color-success);
-  border-left-color: transparent;
-}
-
-/* 75-100%：四边全绿，用透明缺口表示未完成 */
-.ring-fill.ring-high {
-  border-top-color: var(--color-success);
-  border-right-color: var(--color-success);
-  border-bottom-color: var(--color-success);
-  border-left-color: var(--color-success);
-}
-.card-status-expired .ring-fill {
-  border-top-color: var(--color-expired);
-  border-right-color: var(--color-expired);
-}
-
-.card-status-paused .ring-fill {
-  border-top-color: var(--color-warning);
-  border-right-color: var(--color-warning);
+  transition: background 0.6s var(--ease-out);
+  background: var(--color-border);
 }
 
 .ring-center {

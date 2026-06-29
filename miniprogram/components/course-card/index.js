@@ -29,21 +29,14 @@ Component({
         const subjectLabel = SUBJECT_LABELS[course.subject] || course.subject || ''
         const courseTypeLabel = COURSE_TYPE_LABELS[course.courseType] || course.courseType || ''
 
-        // 环形进度条：分段计算 CSS class 和旋转角度
-        let ringClass = ''
-        let ringAngle = 0
-        if (progressPercent <= 0) {
-          ringClass = ''
-          ringAngle = -90
-        } else if (progressPercent <= 75) {
-          ringClass = 'ring-mid'
-          ringAngle = progressPercent * 3.6 - 90
-        } else {
-          // 75-100%：四边全绿，缺口角度 = 360 - (percent * 3.6)
-          ringClass = 'ring-high'
-          const gapDeg = (100 - progressPercent) * 3.6
-          ringAngle = gapDeg / 2 + 90
-        }
+        // 环形进度条：conic-gradient 精确渲染
+        // 从顶部（-90deg）开始，按状态颜色填充 progress%，灰色填充剩余
+        const ringColor = course.status === 'expired' ? 'var(--color-expired)'
+          : course.status === 'paused' ? 'var(--color-warning)'
+          : 'var(--color-success)'
+        const ringBg = progressPercent > 0
+          ? `conic-gradient(from -90deg, ${ringColor} 0% ${progressPercent}%, var(--color-border) ${progressPercent}% 100%)`
+          : 'var(--color-border)'
 
         // 判断是否即将过期（30天内）
         let isExpiring = false
@@ -56,15 +49,14 @@ Component({
         }
 
         const formattedExpiryDate = course.expiryDate ? formatDate(new Date(course.expiryDate)) : ''
-        this.setData({ progressPercent, ringClass, ringAngle, statusLabel, subjectLabel, courseTypeLabel, isExpiring, formattedExpiryDate })
+        this.setData({ progressPercent, ringBg, statusLabel, subjectLabel, courseTypeLabel, isExpiring, formattedExpiryDate })
       }
     }
   },
 
   data: {
     progressPercent: 0,
-    ringClass: '',
-    ringAngle: -90,
+    ringBg: 'var(--color-border)',
     statusLabel: '',
     subjectLabel: '',
     courseTypeLabel: '',

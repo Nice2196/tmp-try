@@ -24,7 +24,7 @@
     <!-- 右侧：环形进度 -->
     <view class="card-progress-ring">
       <view class="ring-bg"></view>
-      <view class="ring-fill {{ringClass}}" style="transform: rotate({{ringAngle}}deg)"></view>
+      <view class="ring-fill" style="background: {{ringBg}}"></view>
       <view class="ring-center">
         <text class="ring-value">{{course.remainingHours || 0}}</text>
         <text class="ring-label">剩余</text>
