@@ -118,7 +118,6 @@ exports.main = async (event, context) => {
   //       对于无记录且排课时间已过的锁，删除以允许重试。
   // ============================================================
   await cleanupOrphanLocks(targetDateStr, targetDate)
-  const targetDate = getTargetDate(event)
 
   logInfo('autoDeduct', `自动消课开始`, {
     targetDate: formatBeijingDate(targetDate),
@@ -279,13 +278,12 @@ async function cleanupOrphanLocks(targetDateStr, targetDate) {
       const dateSuffix = `_${targetDateStr}`
       if (!lockKey.endsWith(dateSuffix)) continue
 
-      const prefix = lockKey.slice(0, -dateSuffix.length)
-      // prefix = "courseId_scheduleId"
-      // 但 courseId 和 scheduleId 都是 32 位十六进制，需要正确分割
-      // courseId 是 32 位，scheduleId 是 32 位，中间用 _ 分隔
-      // 但 scheduleId 也可能包含 _，所以从左取 32 位作为 courseId
-      const courseId = prefix.slice(0, 32)
-      const scheduleId = prefix.slice(33) // 跳过中间的 _
+      // lockKey 格式: courseId_scheduleId_YYYY-MM-DD
+      // courseId 和 scheduleId 都是 32 位十六进制（不含 _），用 _ 分割
+      const parts = lockKey.slice(0, -dateSuffix.length).split('_')
+      if (parts.length < 2) continue
+      const scheduleId = parts.pop()
+      const courseId = parts.join('_')
 
       if (lessonKeys.has(`${courseId}_${scheduleId}`)) continue
 

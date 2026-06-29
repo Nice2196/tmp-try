@@ -25,6 +25,10 @@ Component({
         const progressPercent = course.totalHours > 0
           ? Math.round((course.remainingHours / course.totalHours) * 100)
           : 0
+        // 底部进度条显示已消耗比例（与"已消 x / y"文字一致）
+        const consumedPercent = course.totalHours > 0
+          ? Math.round((course.consumedHours / course.totalHours) * 100)
+          : 0
         const statusLabel = COURSE_STATUS_LABELS[course.status] || course.status
         const subjectLabel = SUBJECT_LABELS[course.subject] || course.subject || ''
         const courseTypeLabel = COURSE_TYPE_LABELS[course.courseType] || course.courseType || ''
@@ -49,13 +53,14 @@ Component({
         }
 
         const formattedExpiryDate = course.expiryDate ? formatDate(new Date(course.expiryDate)) : ''
-        this.setData({ progressPercent, ringBg, statusLabel, subjectLabel, courseTypeLabel, isExpiring, formattedExpiryDate })
+        this.setData({ progressPercent, consumedPercent, ringBg, statusLabel, subjectLabel, courseTypeLabel, isExpiring, formattedExpiryDate })
       }
     }
   },
 
   data: {
     progressPercent: 0,
+    consumedPercent: 0,
     ringBg: 'var(--color-border)',
     statusLabel: '',
     subjectLabel: '',

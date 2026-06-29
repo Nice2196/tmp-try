@@ -35,11 +35,11 @@
   <!-- 底部：课时信息 -->
   <view class="card-bottom">
     <view class="hours-bar">
-      <view class="hours-fill" style="width: {{progressPercent}}%"></view>
+      <view class="hours-fill" style="width: {{consumedPercent}}%"></view>
     </view>
     <view class="hours-info">
       <text class="hours-text">已消 {{course.consumedHours || 0}} / {{course.totalHours || 0}} 课时</text>
-      <text class="hours-percent {{course.remainingHours <= (course.lowHoursThreshold || 3) ? 'hours-warn' : ''}}">{{progressPercent}}%</text>
+      <text class="hours-percent {{course.remainingHours <= (course.lowHoursThreshold || 3) ? 'hours-warn' : ''}}">{{consumedPercent}}%</text>
     </view>
   </view>
 
