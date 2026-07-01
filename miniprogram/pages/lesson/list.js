@@ -55,7 +55,8 @@ Page({
       const lessons = (res.data && res.data.lessons || []).map(l => ({
         ...l,
         displayDate: formatDate(l.lessonDate),
-        displayTime: l.scheduledTime || '',
+        // 手动消课无 scheduledTime 时，显示操作时间（createdAt，格式 YYYY-MM-DD HH:MM）
+        displayTime: l.scheduledTime || (l.createdAt ? formatDateTime(l.createdAt) : ''),
         displayCreatedAt: l.createdAt ? formatDateTime(l.createdAt) : ''
       }))
 

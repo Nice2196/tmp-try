@@ -160,11 +160,13 @@ exports.main = async (event, context) => {
           l => l.courseId === lesson.courseId && l.lessonRecordId === lesson._id
         )
         if (!alreadyInList) {
+          // 手动消课无 scheduledTime 时，显示操作时间（createdAt）
+          const time = lesson.scheduledTime || formatTime(lesson.createdAt) || ''
           dateLessons.push({
             courseId: lesson.courseId,
             courseName: lesson.courseName,
             scheduleId: lesson.scheduleId || null,
-            time: lesson.scheduledTime || '',
+            time: time,
             lessonRecordId: lesson._id,
             status: 'completed',
             deductionType: lesson.deductionType,
@@ -262,7 +264,8 @@ async function getMonthLessons(openid, year, month) {
       scheduledTime: true,
       deductionHours: true,
       deductionType: true,
-      status: true
+      status: true,
+      createdAt: true
     })
     .get()
 
@@ -368,6 +371,27 @@ function formatBeijingDate(date) {
   const m = String(beijing.getUTCMonth() + 1).padStart(2, '0')
   const d = String(beijing.getUTCDate()).padStart(2, '0')
   return `${y}-${m}-${d}`
+}
+
+/**
+ * 格式化时间为 HH:MM（北京时间）
+ * 支持 Date 对象和 {$date: timestamp} 格式
+ */
+function formatTime(dateVal) {
+  if (!dateVal) return ''
+  let d
+  if (dateVal instanceof Date) {
+    d = dateVal
+  } else if (typeof dateVal === 'object' && dateVal.$date) {
+    d = new Date(dateVal.$date)
+  } else {
+    d = new Date(dateVal)
+  }
+  if (isNaN(d.getTime())) return ''
+  const beijing = new Date(d.getTime() + 8 * 3600 * 1000)
+  const h = String(beijing.getUTCHours()).padStart(2, '0')
+  const min = String(beijing.getUTCMinutes()).padStart(2, '0')
+  return `${h}:${min}`
 }
 
 module.exports = { main: exports.main }

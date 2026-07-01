@@ -80,30 +80,6 @@ Page({
   },
 
   /**
-   * 初始化数据库索引
-   */
-  async onInitDB() {
-    wx.showModal({
-      title: '初始化数据库',
-      content: '将创建所有必要的索引，此操作只需执行一次。确定继续吗？',
-      success: async (res) => {
-        if (!res.confirm) return
-
-        try {
-          const { callCloud } = require('../../utils/auth')
-          const result = await callCloud('init-db', {})
-
-          wx.showToast({ title: '索引创建成功', icon: 'success' })
-          this.setData({ dbInitialized: true })
-        } catch (err) {
-          console.error('[settings] 初始化失败:', err)
-          wx.showToast({ title: '初始化失败，请查看云开发控制台', icon: 'none' })
-        }
-      }
-    })
-  },
-
-  /**
    * 查看操作日志
    */
   onViewAuditLog() {

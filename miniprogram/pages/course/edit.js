@@ -51,12 +51,15 @@ Page({
 
     /* ===== 排课表单 ===== */
     scheduleForm: {
-      selectedDays: [1],
+      selectedDays: [((d = new Date()) => { const bj = new Date(d.getTime() + 8*3600000); return bj.getUTCDay() })()],
       time: '17:00',
       effectiveFrom: ''
     },
     /** 星期选项（含checked状态，避免WXML中indexOf不可靠） */
-    weekdayOptions: WEEKDAY_LABELS.map((label, i) => ({ value: i, label, checked: i === 1 })),
+    weekdayOptions: WEEKDAY_LABELS.map((label, i) => {
+      const todayDow = ((d = new Date()) => { const bj = new Date(d.getTime() + 8*3600000); return bj.getUTCDay() })()
+      return { value: i, label, checked: i === todayDow }
+    }),
 
     /** 已有排课列表 */
     schedules: [],
@@ -314,14 +317,15 @@ Page({
 
       // 重新加载数据
       this.loadCourseData()
-      // 重置排课表单（同步更新weekdayOptions的checked状态）
+      // 重置排课表单（同步更新weekdayOptions的checked状态，默认选中今天）
+      const todayDow = ((d = new Date()) => { const bj = new Date(d.getTime() + 8*3600000); return bj.getUTCDay() })()
       this.setData({
         scheduleForm: {
-          selectedDays: [1],
+          selectedDays: [todayDow],
           time: '17:00',
           effectiveFrom: ''
         },
-        weekdayOptions: WEEKDAY_LABELS.map((label, i) => ({ value: i, label, checked: i === 1 }))
+        weekdayOptions: WEEKDAY_LABELS.map((label, i) => ({ value: i, label, checked: i === todayDow }))
       })
     } catch (err) {
       console.error('[edit] 添加排课失败:', err)
